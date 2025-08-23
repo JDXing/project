@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - [School Name]</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='contact.css') }}">
+
+</head>
+<body>
+
+<nav>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('academics') }}">Academics</a>
+        <a href="{{ url_for('aboutus') }}">About Us</a>
+        <a href="{{ url_for('contactus') }}">Contact</a>
+    </nav>
+
+
+    <header>
+        <h1>Contact Us at [School Name]</h1>
+        <p>We’re here to help! Feel free to reach out with any questions or inquiries.</p>
+    </header>
+
+    <div class="container">
+        <!-- Contact Information Section -->
+        <section class="section contact-details">
+            <h2>Our Contact Information</h2>
+            <p>If you need to get in touch with us directly, here are the best ways to contact the school:</p>
+            <ul>
+                <li><strong>Address:</strong> 123 School Road, City, State, ZIP Code</li>
+                <li><strong>Phone:</strong> (123) 456-7890</li>
+                <li><strong>Email:</strong> <a href="mailto:info@schoolname.com">info@schoolname.com</a></li>
+                <li><strong>School Hours:</strong> Monday - Friday, 8:00 AM - 4:00 PM</li>
+            </ul>
+        </section>
+
+        <!-- Contact Form Section -->
+        <section class="section">
+            <h2>Send Us a Message</h2>
+            <p>Please fill out the form below, and we’ll get back to you as soon as possible.</p>
+
+            <form class="contact-form" action="submit_form.php" method="POST">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Email Address:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" rows="6" required></textarea>
+
+                <button type="submit">Submit</button>
+            </form>
+        </section>
+
+        <!-- School Location on Google Maps -->
+        <section class="section map-container">
+            <h2>Find Us</h2>
+            <p>Our school is located at the address provided above. Use the map below to get directions.</p>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31759.989347460776!2d-0.12764750000000003!3d51.507351!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48761b1f93b56bdf%3A0xf93b3f9005828b90!2sLondon!5e0!3m2!1sen!2suk!4v1635472515775!5m2!1sen!2suk" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 [School Name]. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
+
