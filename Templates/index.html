@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>School Website</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='school.css') }}">
+
+</head>
+<body>
+
+    <nav>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('academics') }}">Academics</a>
+        <a href="{{ url_for('aboutus') }}">About Us</a>
+        <a href="{{ url_for('contactus') }}">Contact</a>
+    </nav>
+
+
+    <header>
+        <h1>Welcome to [School Name]</h1>
+        <p>Your Path to Knowledge</p>
+    </header>
+
+    <div class="main-content">
+        <section>
+            <h2>Welcome to Our School</h2>
+            <p>Our school offers a wide range of academic programs that aim to provide quality education and foster holistic development.</p>
+        </section>
+
+        <section>
+            <h2>Our Programs</h2>
+            <div class="card">
+                <h3>Primary Education</h3>
+                <img src="https://via.placeholder.com/300" alt="Primary Education">
+                <p>We provide a strong foundation in reading, writing, and math for young learners.</p>
+            </div>
+            <div class="card">
+                <h3>Secondary Education</h3>
+                <img src="https://via.placeholder.com/300" alt="Secondary Education">
+                <p>Prepare students for college with advanced coursework and extracurricular activities.</p>
+            </div>
+            <div class="card">
+                <h3>Extracurricular Activities</h3>
+                <img src="https://via.placeholder.com/300" alt="Extracurricular Activities">
+                <p>We offer a variety of sports, arts, and community service programs for all students.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Upcoming Events</h2>
+            <ul>
+                <li>School Annual Day - December 10th</li>
+                <li>Parent-Teacher Meeting - January 15th</li>
+                <li>Summer Camp Registration - February 1st</li>
+            </ul>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 [School Name]. All rights reserved.</p>
+    </footer>
+</body>
+</html>
