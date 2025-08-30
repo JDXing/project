@@ -14,6 +14,10 @@ def aboutus():
 def contactus():
     return render_template('contactus.html')
 
+@app.route('/galary')
+def galary():
+    return render_template('galary.html')
+
 @app.route('/academics')
 def academics():
     return render_template('academics.html')
