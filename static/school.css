@@ -26,6 +26,9 @@ body {
         }
         h2 {
             color: #004d99;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 10px;
         }
 
         nav {
@@ -54,7 +57,9 @@ body {
         }
         .values-list, .offers-list {
             list-style-type: none;
-            padding: 0;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 10px;
         }
         .values-list li, .offers-list li {
             background-color: #e2e2e2;
