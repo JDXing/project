@@ -22,13 +22,43 @@
         <p>Explore our visual journey through curated memories</p>
     </header>
     <div class="btn-container">
-        <button class="btn add">add</button>
-        <button class="btn remove">remove</button>
+        <input type="file" id="fileInput" accept="image/*" multiple hidden>
+        <button class="btn add" onclick="document.getElementById('fileInput').click()">Add</button>
+        <button class="btn remove" onclick="removeSelected()">Remove</button>
     </div>
-    <section>
-        <!--add image section-->
+
+    <section class="gallery" id="gallery">
     </section>
+
     <footer>
         <p>&copy; 2025 [School Name]. All rights reserved.</p>
     </footer>
+
+    <script>
+        const fileInput = document.getElementById("fileInput");
+        const gallery = document.getElementById("gallery");
+
+        // Add images
+        fileInput.addEventListener("change", (event) => {
+            const files = event.target.files;
+            for (let file of files) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const div = document.createElement("div");
+                    div.className = "gallery-item";
+                    div.innerHTML = `
+                        <img src="${e.target.result}" alt="${file.name}">
+                        <button class="remove-btn" onclick="this.parentElement.remove()">×</button>
+                    `;
+                    gallery.appendChild(div);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Remove all images
+        function removeSelected() {
+            gallery.innerHTML = "";
+        }
+    </script>
 </html>
