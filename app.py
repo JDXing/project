@@ -27,7 +27,10 @@ def galary():
 def academics():
     return render_template('academics.html')
 
-# ✅ New upload route
+@app.route('/admin')
+def admin():
+    return render_template('admin.html')
+
 @app.route('/upload', methods=['POST'])
 def upload_image():
     if 'file' not in request.files:
@@ -37,7 +40,7 @@ def upload_image():
         return "No selected file"
     filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
     file.save(filepath)
-    return redirect(url_for('galary'))
+    return redirect(url_for('admin'))
 
 if __name__ == '__main__':
     app.run(debug=True)
