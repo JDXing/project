@@ -1,9 +1,10 @@
-from flask import Flask, render_template
+from flask import Flask, flash, render_template, request, redirect, url_for
 import os
 
 app = Flask(__name__)
+app.secret_key = 'your_secret_key'
 
-app.config['UPLOAD_FOLDER'] ='static/uploads'
+app.config['UPLOAD_FOLDER'] = 'static/uploads'
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 @app.route('/')
@@ -21,11 +22,29 @@ def contactus():
 @app.route('/galary')
 def galary():
     images = os.listdir(app.config['UPLOAD_FOLDER'])
-    return render_template('galary.html',images=images)
+    return render_template('galary.html', images=images)
 
 @app.route('/academics')
 def academics():
     return render_template('academics.html')
+
+@app.route('/admin')
+def admin():
+    return render_template('admin.html')
+
+@app.route('/upload', methods=['POST'])
+def upload_image():
+    if 'file' not in request.files:
+        flash('❌ No file part')
+        return redirect(url_for('galary'))
+    file = request.files['file']
+    if file.filename == '':
+        flash('⚠️ No file selected')
+        return redirect(url_for('admin'))
+    file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
+    flash('✅ Image uploaded successfully!')
+    return redirect(url_for('admin'))
+
 
 if __name__ == '__main__':
     app.run(debug=True)

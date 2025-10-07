@@ -5,11 +5,16 @@ body {
             background-color: #f4f4f4;
             color: #333;
         }
-        header {
-            background-color: #004d99;
-            color: white;
+
+        .h1{
             padding: 20px;
             text-align: center;
+        }
+
+        .section1 {
+            height: fit-content;
+            width:fit-content;
+            
         }
         header h1 {
             margin: 0;
@@ -49,12 +54,15 @@ body {
             color: black;
         }
 
+        
+        
         .section {
             margin-bottom: 40px;
         }
         .section p {
             line-height: 1.6;
         }
+        
         .values-list, .offers-list {
             list-style-type: none;
             max-width: 1200px;

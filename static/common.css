@@ -98,3 +98,22 @@ footer {
     border-radius: 50%;
     cursor: pointer;
 }
+.alert-box {
+  background-color: #e6ffe6;
+  color: #2d7a2d;
+  border: 1px solid #77cc77;
+  padding: 10px;
+  margin: 10px auto;
+  width: 60%;
+  text-align: center;
+  border-radius: 8px;
+  font-weight: bold;
+  animation: fadeOut 4s forwards;
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; display: none; }
+}
+
