@@ -1,7 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, flash, render_template, request, redirect, url_for
 import os
 
 app = Flask(__name__)
+app.secret_key = 'your_secret_key'
 
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
@@ -34,13 +35,16 @@ def admin():
 @app.route('/upload', methods=['POST'])
 def upload_image():
     if 'file' not in request.files:
-        return "No file part"
+        flash('❌ No file part')
+        return redirect(url_for('galary'))
     file = request.files['file']
     if file.filename == '':
-        return "No selected file"
-    filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
-    file.save(filepath)
+        flash('⚠️ No file selected')
+        return redirect(url_for('admin'))
+    file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
+    flash('✅ Image uploaded successfully!')
     return redirect(url_for('admin'))
+
 
 if __name__ == '__main__':
     app.run(debug=True)

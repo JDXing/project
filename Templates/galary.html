@@ -21,14 +21,6 @@
         <p>Explore our visual journey through curated memories</p>
     </header>
 
-    <div class="btn-container">
-        <!-- Upload Form -->
-        <form action="{{ url_for('upload_image') }}" method="POST" enctype="multipart/form-data">
-            <input type="file" name="file" accept="image/*" required>
-            <button type="submit" class="btn add">Upload</button>
-        </form>
-    </div>
-
     <section class="gallery" id="gallery">
         {% if images %}
             {% for image in images %}
