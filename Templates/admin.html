@@ -19,31 +19,22 @@
     <header>
         <h1>ADMIN</h1>
     </header>
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <div class="alert-box">
-                    {% for message in messages %}
-                        <p>{{ message }}</p>
-                    {% endfor %}
-                    </div>
-                {% endif %}
-                {% endwith %}
+            
     <div class="glry">Gallary</div>
     <div class="btn-container">
         
         <!-- Upload Form -->
-       <form id="uploadForm" action="{{ url_for('upload_image') }}" method="POST" enctype="multipart/form-data">
-  <input 
-    type="file" 
-    id="fileInput" 
-    name="file" 
-    accept="image/*,video/*" 
-    required 
-    hidden
-  >
-  <button type="button" class="btn add" onclick="triggerFileUpload()">Upload</button>
-  <button type="button" class="btn remove">Remove</button>
+     <form id="uploadForm" action="{{ url_for('upload_image') }}" method="POST" enctype="multipart/form-data">
+     <input type="file" id="fileInput" name="file" multiple accept="image/*,video/*" required hidden>
+     <button type="button" class="btn add" onclick="triggerFileUpload()">Upload</button>
+  
+
 </form>
+<form id="removeForm" action="{{ url_for('remove_image') }}" method="POST" style="display:inline-block;">
+        <input type="hidden" id="removeFileName" name="filename" value="">
+        <button type="button" class="btn remove">Remove</button>
+    </form>
+
 
 
 <script>
@@ -64,13 +55,16 @@
     };
   }
 </script>
-
-        <form action="{{ url_for('upload_image') }}" method="POST" enctype="multipart/form-data">
-            <input type="file" name="file" multiple accept="image/*,vedio/*" required>
-            <button type="submit" class="btn add">Upload</button>
-        </form>
-        
     </div>
+    {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="alert-box">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                    </div>
+                {% endif %}
+                {% endwith %}
     <footer>
         <p>&copy; 2025 [School Name]. All rights reserved.</p>
     </footer>
