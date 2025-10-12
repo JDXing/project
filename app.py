@@ -1,4 +1,5 @@
-from flask import Flask, flash, render_template, request, redirect, url_for
+from flask import Flask, flash, render_template, request, redirect, url_for, session
+from functools import wraps
 import os
 
 app = Flask(__name__)
@@ -6,6 +7,15 @@ app.secret_key = 'hbcfgkolpuewqf'
 
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+
+def admin_required(f):
+    @wraps(f)
+    def decorated_function(*args,**kwargs):
+        if not session.get('is_admin'):
+            flash("⚠️ You must be logged in as admin.")
+            return redirect(url_for('admin_login'))
+        return f(*args,**kwargs)
+    return decorated_function
 
 @app.route('/')
 def home():
