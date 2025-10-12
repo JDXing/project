@@ -14,8 +14,10 @@ body {
         }
 
         .section1 {
+            overflow: visible;
             height: fit-content;
             width:fit-content;
+            
             
         }
         header{
@@ -28,6 +30,7 @@ body {
             max-width: 1200px;
             margin: 0 auto;
             padding: 10px;
+            
         }
         .container {
             max-width: 1200px;
@@ -70,6 +73,7 @@ body {
         
         .section {
             margin-bottom: 40px;
+
         }
         .section p {
             line-height: 1.6;
@@ -101,3 +105,56 @@ body {
         justify-content: center;
         line-height: normal;
         }
+        .zoom-img{
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 1s ease;
+            padding: 20px;
+            filter: blur(1px);
+        }
+        .zoom-img:hover{
+            transform: scale(1.05);
+        }
+        .hero{
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            
+        }
+        .overlay-text{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            color: white;
+            text-align: center;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+            
+            padding: 10px 20px;
+            border-radius: 8px;
+        }
+        .overlay-text h1{
+            font-size: 48px;
+            margin: 0;
+        }
+        .overlay-text p{
+            font-size: 24px;
+            margin: 10px 0 0 0;
+        }
+        @keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px); /* start slightly below */
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);    /* move to original position */
+  }
+}
+.hero h1{
+    animation: fadeInUp 1s ease forwards;
+}
+.hero p{
+    animation: fadeInUp 1.5s ease forwards
+}
