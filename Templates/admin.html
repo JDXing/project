@@ -4,70 +4,89 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ADMINISTRATOR</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='common.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
 </head>
 <body>
 
-    <nav>
-        <a href="{{ url_for('home') }}">Home</a>
-        <a href="{{ url_for('academics') }}">Academics</a>
-        <a href="{{ url_for('galary') }}">Gallery</a>
-        <a href="{{ url_for('aboutus') }}">About Us</a>
-        <a href="{{ url_for('contactus') }}">Contact</a>
-    </nav>
+<nav>
+    <a href="{{ url_for('home') }}">Home</a>
+    <a href="{{ url_for('academics') }}">Academics</a>
+    <a href="{{ url_for('galary') }}">Gallery</a>
+    <a href="{{ url_for('aboutus') }}">About Us</a>
+    <a href="{{ url_for('contactus') }}">Contact</a>
+</nav>
 
-    <header>
-        <h1>ADMIN</h1>
-    </header>
-            
-    <div class="glry">Gallary</div>
-    <div class="btn-container">
-        
-        <!-- Upload Form -->
-     <form id="uploadForm" action="{{ url_for('upload_image') }}" method="POST" enctype="multipart/form-data">
-     <input type="file" id="fileInput" name="file" multiple accept="image/*,video/*" required hidden>
-     <button type="button" class="btn add" onclick="triggerFileUpload()">Upload</button>
-  
+<header>
+    <h1>ADMIN PANEL</h1>
+</header>
 
-</form>
-<form id="removeForm" action="{{ url_for('remove_image') }}" method="POST" style="display:inline-block;">
-        <input type="hidden" id="removeFileName" name="filename" value="">
-        <button type="button" class="btn remove">Remove</button>
+<div class="btn-container">
+    <!-- Upload Form -->
+    <form id="uploadForm" action="{{ url_for('upload_image') }}" method="POST" enctype="multipart/form-data">
+        <input type="file" id="fileInput" name="file" multiple accept="image/*,video/*" required hidden>
+        <button type="button" class="btn add" onclick="triggerFileUpload()">Upload</button>
     </form>
 
+    <!-- Remove Button -->
+    <button type="button" class="btn remove" onclick="showRemovePanel()">Remove</button>
+</div>
 
+<!-- Hidden Remove Panel -->
+<div id="removePanel">
+    <button class="close-btn" onclick="closeRemovePanel()">X</button>
+    <form id="removeForm" action="{{ url_for('remove_image') }}" method="POST">
+        <h2>Select Files to Delete</h2>
+        <div class="gallery">
+            {% for file in images %}
+                <label class="gallery-item">
+                    {% if file.endswith('.mp4') or file.endswith('.mov') or file.endswith('.avi') or file.endswith('.mkv') or file.endswith('.webm') %}
+                        <video src="{{ url_for('static', filename='uploads/' + file) }}" controls></video>
+                    {% else %}
+                        <img src="{{ url_for('static', filename='uploads/' + file) }}" alt="{{ file }}">
+                    {% endif %}
+                    <input type="checkbox" name="selected_files" value="{{ file }}">
+                </label>
+            {% else %}
+                <p>No files uploaded yet.</p>
+            {% endfor %}
+        </div>
+        <button type="submit" class="btn delete">Delete Selected</button>
+    </form>
+</div>
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="alert-box">
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+<footer>
+    <p>&copy; 2025 [School Name]. All rights reserved.</p>
+</footer>
 
 <script>
-  function triggerFileUpload() {
-    const fileInput = document.getElementById('fileInput');
-    fileInput.click(); // open file chooser
+    function triggerFileUpload() {
+        const fileInput = document.getElementById('fileInput');
+        fileInput.click();
+        fileInput.onchange = () => {
+            if (fileInput.files.length > 0) {
+                document.getElementById('uploadForm').submit();
+            }
+        };
+    }
 
-    fileInput.onchange = () => {
-      if (fileInput.files.length > 0) {
-        const file = fileInput.files[0];
-        const allowedTypes = ['image/', 'video/'];
-        const isValid = allowedTypes.some(type => file.type.startsWith(type));
+    function showRemovePanel() {
+        document.getElementById('removePanel').style.display = 'block';
+    }
 
-        if (isValid) {
-          document.getElementById('uploadForm').submit();
-        }
-      }
-    };
-  }
+    function closeRemovePanel() {
+        document.getElementById('removePanel').style.display = 'none';
+    }
 </script>
-    </div>
-    {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <div class="alert-box">
-                    {% for message in messages %}
-                        <p>{{ message }}</p>
-                    {% endfor %}
-                    </div>
-                {% endif %}
-                {% endwith %}
-    <footer>
-        <p>&copy; 2025 [School Name]. All rights reserved.</p>
-    </footer>
 
 </body>
 </html>
