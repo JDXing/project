@@ -41,7 +41,7 @@ def upload_image():
     
     files = request.files.getlist('file')
     n = len(files)
-    allowed_exts = {'png', 'jpg', 'jpeg', 'mp4', 'mov', 'avi', 'mkv', 'webm'}
+    allowed_exts = {'png', 'jpg', 'jpeg', 'heic'}
     i=0
     
     for file in files:    
