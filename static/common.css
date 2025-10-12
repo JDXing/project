@@ -23,16 +23,21 @@ nav a {
     text-align: center;
 }
 nav a:hover {
-    background-color: #ddd;
-    color: black;
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
 }
 .btn {
-    padding: 10px 20px;
+    width: 120px;
+    height: 50px;
+    font-size: 20px;
+    line-height: 50px;
+    padding: 0;     
     border: none;
     border-radius: 5px;
-    font-size: 16px;
+    text-align: center;
     cursor: pointer;
     margin: 5px;
+    display: inline-block;
 }
 .add {
     background-color: #4CAF50;
@@ -50,11 +55,21 @@ nav a:hover {
     background-color: #d32f2f;
     transform: scale(1.0);
 }
+.glry{
+    background-color: #333;
+    padding: 15px 20px;
+    color: #e6ffe6;
+    text-align: left;
+    font-weight: bold;
+    font-size: larger;
+}
 .btn-container {
     position: relative;
-    margin: 20px;
+    margin: 0;
     text-align: right;
+    padding: 20px 0px;
 }
+
 footer {
     background-color: #004d99;
     color: white;
@@ -86,17 +101,6 @@ footer {
     width: 100%;
     height: 150px;
     object-fit: cover;
-}
-.remove-btn {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    background: #f44336;
-    color: white;
-    border: none;
-    padding: 3px 7px;
-    border-radius: 50%;
-    cursor: pointer;
 }
 .alert-box {
   background-color: #e6ffe6;

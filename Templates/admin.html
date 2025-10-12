@@ -28,12 +28,42 @@
                     </div>
                 {% endif %}
                 {% endwith %}
+    <div class="glry">Gallary</div>
     <div class="btn-container">
         <!-- Upload Form -->
-        <form action="{{ url_for('upload_image') }}" method="POST" enctype="multipart/form-data">
-            <input type="file" name="file" accept="image/*" required>
-            <button type="submit" class="btn add">Upload</button>
-        </form>
+       <form id="uploadForm" action="{{ url_for('upload_image') }}" method="POST" enctype="multipart/form-data">
+  <input 
+    type="file" 
+    id="fileInput" 
+    name="file" 
+    accept="image/*,video/*" 
+    required 
+    hidden
+  >
+  <button type="button" class="btn add" onclick="triggerFileUpload()">Upload</button>
+  <button type="button" class="btn remove">Remove</button>
+</form>
+
+
+<script>
+  function triggerFileUpload() {
+    const fileInput = document.getElementById('fileInput');
+    fileInput.click(); // open file chooser
+
+    fileInput.onchange = () => {
+      if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        const allowedTypes = ['image/', 'video/'];
+        const isValid = allowedTypes.some(type => file.type.startsWith(type));
+
+        if (isValid) {
+          document.getElementById('uploadForm').submit();
+        }
+      }
+    };
+  }
+</script>
+
         
     </div>
     <footer>
