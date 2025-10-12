@@ -70,6 +70,15 @@ nav a:hover {
     padding: 20px 0px;
 }
 
+.btn.delete {
+    display: block;
+    margin: 20px auto;
+    width: 180px;
+    height: 50px;
+    background-color: #f44336;
+    color: white;
+}
+
 footer {
     background-color: #004d99;
     color: white;
@@ -114,13 +123,27 @@ footer {
     border-radius: 0;
 }
 
-.btn.delete {
-    display: block;
-    margin: 20px auto;
-    width: 180px;
-    height: 50px;
-    background-color: #f44336;
+.gallery-bar {
+    background-color: #333;  /* dark blue bar */
     color: white;
+    height: 60px;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    text-align: left;
+    padding-top: 10px;
+    margin: 0;
+}
+
+.admin-box {
+    border: 2px solid #333;  /* blue border */
+    border-radius: 10px;
+    padding: 2px;
+    max-width: 1500px;           /* adjust width as needed */
+    margin: 20px auto;          /* center the box */
+    background-color: #f9f9f9;  /* light background */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 .gallery-item img {
