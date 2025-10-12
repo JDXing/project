@@ -36,11 +36,20 @@ def admin():
 def upload_image():
     if 'file' not in request.files:
         flash('❌ No file part')
-        return redirect(url_for('galary'))
+        return redirect(url_for('admin'))
     file = request.files['file']
+    
     if file.filename == '':
         flash('⚠️ No file selected')
         return redirect(url_for('admin'))
+    
+    allowed_exts = {'png', 'jpg', 'jpeg', 'mp4', 'mov', 'avi', 'mkv', 'webm'}
+    ext = ext = file.filename.rsplit('.', 1)[-1].lower()
+
+    if ext not in allowed_exts:
+        flash('🚫 Invalid file type! Only images or videos are allowed.')
+        return redirect(url_for('admin'))
+    
     file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
     flash('✅ Image uploaded successfully!')
     return redirect(url_for('admin'))
