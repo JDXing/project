@@ -2,7 +2,7 @@ from flask import Flask, flash, render_template, request, redirect, url_for
 import os
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'
+app.secret_key = 'hbcfgkolpuewqf'
 
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
@@ -49,12 +49,13 @@ def upload_image():
             flash('⚠️ file has no name')
             continue  
     
-        ext =file.filename.rsplit('.', 1)[-1].lower()
+        ext = file.filename.rsplit('.', 1)[-1].lower()
 
         if ext not in allowed_exts:
             flash(f'🚫 Invalid file type! {file.filename}.')
             continue
-    
+        
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
         i=i+1
         
     flash(f'✅ {i} out of {n} files uploaded ')
