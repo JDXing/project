@@ -35,25 +35,33 @@ def admin():
 @app.route('/upload', methods=['POST'])
 def upload_image():
     if 'file' not in request.files:
-        flash('❌ No file part')
-        return redirect(url_for('admin'))
-    file = request.files['file']
-    
-    if file.filename == '':
-        flash('⚠️ No file selected')
+        flash('❌ Missing key variable file')
         return redirect(url_for('admin'))
     
+    files = request.files.getlist('file')
+    n = len(files)
     allowed_exts = {'png', 'jpg', 'jpeg', 'mp4', 'mov', 'avi', 'mkv', 'webm'}
-    ext = ext = file.filename.rsplit('.', 1)[-1].lower()
-
-    if ext not in allowed_exts:
-        flash('🚫 Invalid file type! Only images or videos are allowed.')
-        return redirect(url_for('admin'))
+    i=0
     
-    file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
-    flash('✅ Image uploaded successfully!')
+    for file in files:    
+        if file.filename == '':
+            flash('⚠️ file has no name')
+            continue  
+    
+        ext =file.filename.rsplit('.', 1)[-1].lower()
+
+        if ext not in allowed_exts:
+            flash(f'🚫 Invalid file type! {file.filename}.')
+            continue
+    
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
+        i=i+1
+        
+    flash(f'✅ {i} out of {n} files uploaded ')
     return redirect(url_for('admin'))
 
+def remove_image():
+    pass
 
 if __name__ == '__main__':
     app.run(debug=True)

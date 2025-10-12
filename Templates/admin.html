@@ -30,6 +30,7 @@
                 {% endwith %}
     <div class="glry">Gallary</div>
     <div class="btn-container">
+        
         <!-- Upload Form -->
        <form id="uploadForm" action="{{ url_for('upload_image') }}" method="POST" enctype="multipart/form-data">
   <input 
@@ -64,6 +65,10 @@
   }
 </script>
 
+        <form action="{{ url_for('upload_image') }}" method="POST" enctype="multipart/form-data">
+            <input type="file" name="file" multiple accept="image/*,vedio/*" required>
+            <button type="submit" class="btn add">Upload</button>
+        </form>
         
     </div>
     <footer>
