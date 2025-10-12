@@ -30,9 +30,10 @@ def academics():
 
 @app.route('/admin')
 def admin():
-    return render_template('admin.html')
+    images = os.listdir(app.config['UPLOAD_FOLDER'])
+    return render_template('admin.html', images=images)
 
-@app.route('/upload', methods=['POST'])
+@app.route('/admin/upload', methods=['POST'])
 def upload_image():
     if 'file' not in request.files:
         flash('❌ Missing key variable file')
@@ -54,16 +55,28 @@ def upload_image():
             flash(f'🚫 Invalid file type! {file.filename}.')
             continue
     
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
         i=i+1
         
     flash(f'✅ {i} out of {n} files uploaded ')
     return redirect(url_for('admin'))
 
-@app.route('/upload', methods=['POST'])
+@app.route('/admin/remove', methods=['POST'])
 def remove_image():
-    images = os.listdir(app.config['UPLOAD_FOLDER'])
-    return render_template('galary.html', images=images)
+    selected_files=request.form.getlist('selected_files')
+    
+    if len(selected_files) == 0:
+        flash("⚠️ No files selected for deletion!")
+        return redirect(url_for('admin'))
+
+    c=0
+    for filename in selected_files:
+        path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        if os.path.exists(path):
+            os.remove(path)
+            c=c+1
+    flash(f"🗑️ {c} out of {len(selected_files)} file(s) deleted successfully.")
+    return redirect(url_for('admin'))
+    
 
 if __name__ == '__main__':
     app.run(debug=True)
