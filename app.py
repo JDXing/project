@@ -60,8 +60,10 @@ def upload_image():
     flash(f'✅ {i} out of {n} files uploaded ')
     return redirect(url_for('admin'))
 
+@app.route('/upload', methods=['POST'])
 def remove_image():
-    pass
+    images = os.listdir(app.config['UPLOAD_FOLDER'])
+    return render_template('galary.html', images=images)
 
 if __name__ == '__main__':
     app.run(debug=True)
