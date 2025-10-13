@@ -20,22 +20,39 @@
 <header>
     <h1>ADMIN PANEL</h1>
 </header>
+
 <div class="admin-box">
-<div class="gallery-bar">
-    <h2>Gallery</h2>
+
+    <!-- Gallery Bar -->
+    <div class="gallery-bar">
+        <div class="title">Gallery</div>
+        <div class="btn-container">
+            <!-- Upload Form -->
+            <form id="uploadForm" action="{{ url_for('upload_image') }}" method="POST" enctype="multipart/form-data" style="display:inline;">
+                <input type="file" id="fileInput" name="file" multiple accept="image/*,video/*" required hidden>
+                <button type="button" class="btn add" onclick="triggerFileUpload()">Upload</button>
+            </form>
+
+            <!-- Remove Button -->
+            <button type="button" class="btn remove" onclick="showRemovePanel()">Remove</button>
+        </div>
+    </div>
+
+    <!-- Alert Message -->
+    <div class="content">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="alert-box">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+    </div>
+
 </div>
 
-<div class="btn-container">
-    <!-- Upload Form -->
-    <form id="uploadForm" action="{{ url_for('upload_image') }}" method="POST" enctype="multipart/form-data">
-        <input type="file" id="fileInput" name="file" multiple accept="image/*,video/*" required hidden>
-        <button type="button" class="btn add" onclick="triggerFileUpload()">Upload</button>
-    </form>
-
-    <!-- Remove Button -->
-    <button type="button" class="btn remove" onclick="showRemovePanel()">Remove</button>
-</div>
-</div>
 <!-- Hidden Remove Panel -->
 <div id="removePanel">
     <button class="close-btn" onclick="closeRemovePanel()">X</button>
@@ -56,16 +73,6 @@
         <button type="submit" class="btn delete">Delete Selected</button>
     </form>
 </div>
-
-{% with messages = get_flashed_messages() %}
-    {% if messages %}
-        <div class="alert-box">
-        {% for message in messages %}
-            <p>{{ message }}</p>
-        {% endfor %}
-        </div>
-    {% endif %}
-{% endwith %}
 
 <footer>
     <p>&copy; 2025 [School Name]. All rights reserved.</p>
