@@ -4,7 +4,6 @@ body {
     padding: 0;
     background-color: #f4f4f4;
     color: #333;
-    padding-bottom: 50px;
     padding-top: 50px;
 }
 
@@ -43,7 +42,6 @@ nav a {
     transition: all 0.3s ease;
     font-weight: bold;
 
-
 }
 
 nav a:hover {
@@ -54,69 +52,17 @@ nav a:hover {
 
 }
 
-.btn {
-    width: 120px;
-    height: 50px;
-    font-size: 20px;
-    line-height: 50px;
-    padding: 0;
-    border: none;
-    border-radius: 5px;
-    text-align: center;
-    cursor: pointer;
-    margin: 5px;
-    display: inline-block;
-}
-
-.add {
-    background-color: #4CAF50;
-    color: white;
-}
-
-.add:hover {
-    background-color: #45a049;
-    transform: scale(1.0);
-}
-
-.remove {
-    background-color: #f44336;
-    color: white;
-}
-
-.remove:hover {
-    background-color: #d32f2f;
-    transform: scale(1.0);
-}
-
-.glry {
-    background-color: #333;
-    padding: 15px 20px;
-    color: #e6ffe6;
-    text-align: left;
-    font-weight: bold;
-    font-size: larger;
-}
-
-.btn-container {
-    position: relative;
-    margin: 0;
-    text-align: right;
-    padding: 20px 0px;
-}
-
 footer {
-    background-color: #004d99;
-    height: 35px;
+    background-color: #333;
     color: white;
-    padding: 10px 0;
+    padding: 5px 0;
     text-align: center;
-    position: fixed;
-    bottom: 0;
+    position: relative;
+    bottom: 0%;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    line-height: normal;
 }
 
 .gallery {
