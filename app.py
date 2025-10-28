@@ -3,7 +3,7 @@ from functools import wraps
 import os
 
 app = Flask(__name__)
-app.secret_key = 'hbcfgkolpuewqf'
+app.secret_key = 'fgf498ufuh8429fj'
 
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
@@ -38,12 +38,36 @@ def galary():
 def academics():
     return render_template('academics.html')
 
+@app.route('/admin/login',methods=['GET','POST'])
+def admin_login():
+    if request.method == 'POST':
+        password = request.form.get('password')
+
+        # You can later move this to environment variables for more security
+        if password == 'test_1234':
+            session['is_admin'] = True
+            flash('✅ Logged in successfully as admin!')
+            return redirect(url_for('admin'))
+        else:
+            flash('🚫 Invalid credentials!')
+            return redirect(url_for('admin_login'))
+    
+    return render_template('admin_login.html')
+
+@app.route('/admin/logout', methods=['POST'])
+def admin_logout():
+    session.pop('is_admin', None)
+    flash('Logged out successfully.')
+    return redirect(url_for('home'))
+
 @app.route('/admin')
+@admin_required
 def admin():
     images = os.listdir(app.config['UPLOAD_FOLDER'])
     return render_template('admin.html', images=images)
 
 @app.route('/admin/upload', methods=['POST'])
+@admin_required
 def upload_image():
     if 'file' not in request.files:
         flash('❌ Missing key variable file')
@@ -72,6 +96,7 @@ def upload_image():
     return redirect(url_for('admin'))
 
 @app.route('/admin/remove', methods=['POST'])
+@admin_required
 def remove_image():
     selected_files=request.form.getlist('selected_files')
     
