@@ -42,9 +42,12 @@ nav a:hover {
     margin: 0 auto;
     font-weight: bold;
     display: flex;
-    align-items: center;      /* Vertically center text */
-    justify-content: center;  /* Horizontally center text */
-    gap: 8px;                 /* Spacing if you add icons later */
+    align-items: center;
+    /* Vertically center text */
+    justify-content: center;
+    /* Horizontally center text */
+    gap: 8px;
+    /* Spacing if you add icons later */
     transition: background-color 0.3s, transform 0.2s;
 }
 
