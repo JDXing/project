@@ -20,36 +20,110 @@ header h1 {
     margin: 0;
 }
 
-nav {
-    background-color: #004d99;
-    overflow: hidden;
+.topbar {
+    height: 55px;
+    background: #004d99; /* your site color */
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 0 18px;
+    gap: 15px;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    padding: 5px 0;
-    text-align: center;
-    z-index: 1000;
-
+    z-index: 20;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.25);
 }
 
-nav a {
-    color: rgb(255, 255, 255);
-    padding: 15px 20px;
-    text-decoration: none;
-    float: left;
-    text-align: center;
-    transition: all 0.3s ease;
+/* Site Title */
+.site-title {
+    font-size: 20px;
     font-weight: bold;
-
+    margin: 0;
 }
 
-nav a:hover {
+/* Menu Button (3-line) */
+#menu-btn {
+    font-size: 1.9rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: 0.3s;
+}
+#menu-btn:hover {
+    background: #1b263b;
+}
 
-    color: rgb(255, 255, 255);
-    letter-spacing: 2px;
-    background-color: transparent;
+/* ===== SIDEBAR ===== */
+.sidebar {
+    position: fixed;
+    top: 55px;
+    left: -240px; /* hidden initially */
+    width: 240px;
+    height: 100vh;
+    background: #004d99; /* match topbar */
+    padding-top: 20px;
+    transition: 0.4s ease;
+    box-shadow: 5px 0 15px rgba(0,0,0,0.35);
+    z-index: 15;
+}
 
+.sidebar.open {
+    left: 0;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul li {
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar ul li a {
+    display: block;
+    padding: 12px 20px;
+    margin: 5px 10px;
+    border-radius: 8px;
+    font-size: 1.1em;
+    color: white;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.sidebar ul li a:hover {
+    background: #4fc3f7;
+    color: #0d1b2a;
+    box-shadow: 0 0 10px #1b263b;
+}
+
+.sidebar ul li a.active {
+    background: #4fc3f7;
+    color: #0d1b2a;
+    font-weight: 600;
+}
+
+/* Prevent Layout Shift */
+.main-content {
+    margin-top: 55px;
+}
+
+/* Page section animation */
+.page-section {
+    display: none;
+}
+.page-section.active-section {
+    display: block;
+    animation: fadeIn 0.4s;
+}
+
+@keyframes fadeIn {
+    from {opacity:0; transform:translateY(7px);}
+    to {opacity:1; transform:translateY(0);}
 }
 
 footer {

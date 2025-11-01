@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,15 +9,25 @@
     <link rel="icon" href="{{ url_for('static', filename='images/logo.jpg') }}">
 
 </head>
+
 <body>
 
-<nav>
-        <a href="{{ url_for('home') }}">Home</a>
-        <a href="{{ url_for('academics') }}">Academics</a>
-        <a href="{{ url_for('galary') }}">Gallery</a>
-        <a href="{{ url_for('aboutus') }}">About Us</a>
-        <a href="{{ url_for('contactus') }}">Contact</a>
-    </nav>
+    <!-- TOP BAR -->
+    <div class="topbar">
+        <div id="menu-btn">☰</div>
+        <h1 class="site-title">Cherupushpam U.P. School</h1>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+        <ul>
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('academics') }}">Academics</a></li>
+            <li><a href="{{ url_for('galary') }}">Gallery</a></li>
+            <li><a href="{{ url_for('aboutus') }}">About Us</a></li>
+            <li><a href="{{ url_for('contactus') }}">Contact Us</a></li>
+        </ul>
+    </div>
 
 
     <header>
@@ -30,13 +41,14 @@
             <h2>Our Contact Information</h2>
             <p>If you need to get in touch with us directly, here are the best ways to contact the school:</p>
             <ul>
-                <li><strong>Address:</strong> Cherupushpam UP School  Marygiri, Therthally P.O, Alakode (via), Kannur</li>
+                <li><strong>Address:</strong> Cherupushpam UP School Marygiri, Therthally P.O, Alakode (via), Kannur
+                </li>
                 <li><strong>Pin:</strong> 670 571</li>
                 <li><strong>Phone:</strong> 9061285643</li>
                 <li><strong>Email:</strong> <a href="cherupushpamtherthally@gmail.com"></a></li>
             </ul>
         </section>
-        
+
         <section class="section">
             <h2>Send Us a Message</h2>
             <p>Please fill out the form below, and we’ll get back to you as soon as possible.</p>
@@ -59,14 +71,20 @@
         <section class="section map-container">
             <h2>Find Us</h2>
             <p>Our school is located at the address provided above. Use the map below to get directions.</p>
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31759.989347460776!2d-0.12764750000000003!3d51.507351!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48761b1f93b56bdf%3A0xf93b3f9005828b90!2sLondon!5e0!3m2!1sen!2suk!4v1635472515775!5m2!1sen!2suk" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31759.989347460776!2d-0.12764750000000003!3d51.507351!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48761b1f93b56bdf%3A0xf93b3f9005828b90!2sLondon!5e0!3m2!1sen!2suk!4v1635472515775!5m2!1sen!2suk"
+                width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
         </section>
     </div>
-
+    <script>
+        document.getElementById("menu-btn").onclick = function () {
+            document.getElementById("sidebar").classList.toggle("open");
+        };
+    </script>
     <footer>
         <p>&copy; 2025 [School Name]. All rights reserved.</p>
     </footer>
 
 </body>
-</html>
 
+</html>

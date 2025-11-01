@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,96 +8,112 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='images/logo.jpg') }}">
 </head>
+
 <body>
 
-<nav>
-    <a href="{{ url_for('home') }}">Home</a>
-    <a href="{{ url_for('academics') }}">Academics</a>
-    <a href="{{ url_for('galary') }}">Gallery</a>
-    <a href="{{ url_for('aboutus') }}">About Us</a>
-    <a href="{{ url_for('contactus') }}">Contact</a>
-</nav>
+    <!-- TOP BAR -->
+    <div class="topbar">
+        <div id="menu-btn">☰</div>
+        <h1 class="site-title">Cherupushpam U.P. School</h1>
+    </div>
 
-<header>
-    <h1>ADMIN PANEL</h1>
-</header>
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+        <ul>
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('academics') }}">Academics</a></li>
+            <li><a href="{{ url_for('galary') }}">Gallery</a></li>
+            <li><a href="{{ url_for('aboutus') }}">About Us</a></li>
+            <li><a href="{{ url_for('contactus') }}">Contact Us</a></li>
+        </ul>
+    </div>
 
-<div class="admin-box">
+    <header>
+        <h1>ADMIN PANEL</h1>
+    </header>
 
-    <!-- Gallery Bar -->
-    <div class="gallery-bar">
-        <div class="title">Gallery</div>
-        <div class="btn-container">
-            <!-- Upload Form -->
-            <form id="uploadForm" action="{{ url_for('upload_image') }}" method="POST" enctype="multipart/form-data" style="display:inline;">
-                <input type="file" id="fileInput" name="file" multiple accept="image/*,video/*" required hidden>
-                <button type="button" class="btn add" onclick="triggerFileUpload()">Upload</button>
-            </form>
+    <div class="admin-box">
 
-            <!-- Remove Button -->
-            <button type="button" class="btn remove" onclick="showRemovePanel()">Remove</button>
+        <!-- Gallery Bar -->
+        <div class="gallery-bar">
+            <div class="title">Gallery</div>
+            <div class="btn-container">
+                <!-- Upload Form -->
+                <form id="uploadForm" action="{{ url_for('upload_image') }}" method="POST" enctype="multipart/form-data"
+                    style="display:inline;">
+                    <input type="file" id="fileInput" name="file" multiple accept="image/*,video/*" required hidden>
+                    <button type="button" class="btn add" onclick="triggerFileUpload()">Upload</button>
+                </form>
+
+                <!-- Remove Button -->
+                <button type="button" class="btn remove" onclick="showRemovePanel()">Remove</button>
+            </div>
         </div>
-    </div>
 
-    <!-- Alert Message -->
-    <div class="content">
-        {% with messages = get_flashed_messages() %}
+        <!-- Alert Message -->
+        <div class="content">
+            {% with messages = get_flashed_messages() %}
             {% if messages %}
-                <div class="alert-box">
+            <div class="alert-box">
                 {% for message in messages %}
-                    <p>{{ message }}</p>
+                <p>{{ message }}</p>
                 {% endfor %}
-                </div>
+            </div>
             {% endif %}
-        {% endwith %}
+            {% endwith %}
+        </div>
+
     </div>
 
-</div>
-
-<!-- Hidden Remove Panel -->
-<div id="removePanel">
-    <button class="close-btn" onclick="closeRemovePanel()">X</button>
-    <form id="removeForm" action="{{ url_for('remove_image') }}" method="POST">
-        <h2>Select Files to Delete</h2>
-        <div class="gallery">
-          {% if images %}
-            {% for file in images %}
+    <!-- Hidden Remove Panel -->
+    <div id="removePanel">
+        <button class="close-btn" onclick="closeRemovePanel()">X</button>
+        <form id="removeForm" action="{{ url_for('remove_image') }}" method="POST">
+            <h2>Select Files to Delete</h2>
+            <div class="gallery">
+                {% if images %}
+                {% for file in images %}
                 <label class="gallery-item">
                     <img src="{{ url_for('static', filename='uploads/' + file) }}" alt="{{ file }}">
                     <input type="checkbox" name="selected_files" value="{{ file }}">
                 </label>
-            {% else %}
+                {% else %}
                 <p>No files uploaded yet.</p>
-            {% endfor %}
-          {% endif %}
-        </div>
-        <button type="submit" class="btn delete">Delete Selected</button>
-    </form>
-</div>
+                {% endfor %}
+                {% endif %}
+            </div>
+            <button type="submit" class="btn delete">Delete Selected</button>
+        </form>
+    </div>
 
-<footer>
-    <p>&copy; 2025 [School Name]. All rights reserved.</p>
-</footer>
+    <footer>
+        <p>&copy; 2025 [School Name]. All rights reserved.</p>
+    </footer>
 
-<script>
-    function triggerFileUpload() {
-        const fileInput = document.getElementById('fileInput');
-        fileInput.click();
-        fileInput.onchange = () => {
-            if (fileInput.files.length > 0) {
-                document.getElementById('uploadForm').submit();
-            }
+    <script>
+        function triggerFileUpload() {
+            const fileInput = document.getElementById('fileInput');
+            fileInput.click();
+            fileInput.onchange = () => {
+                if (fileInput.files.length > 0) {
+                    document.getElementById('uploadForm').submit();
+                }
+            };
+        }
+
+        function showRemovePanel() {
+            document.getElementById('removePanel').style.display = 'block';
+        }
+
+        function closeRemovePanel() {
+            document.getElementById('removePanel').style.display = 'none';
+        }
+    </script>
+    <script>
+        document.getElementById("menu-btn").onclick = function () {
+            document.getElementById("sidebar").classList.toggle("open");
         };
-    }
-
-    function showRemovePanel() {
-        document.getElementById('removePanel').style.display = 'block';
-    }
-
-    function closeRemovePanel() {
-        document.getElementById('removePanel').style.display = 'none';
-    }
-</script>
-
+    </script>
 </body>
+
 </html>

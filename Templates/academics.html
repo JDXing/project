@@ -12,21 +12,77 @@
 
 <body>
 
-    <nav>
-        <a href="{{ url_for('home') }}">Home</a>
-        <a href="{{ url_for('academics') }}">Academics</a>
-        <a href="{{ url_for('galary') }}">Gallery</a>
-        <a href="{{ url_for('aboutus') }}">About Us</a>
-        <a href="{{ url_for('contactus') }}">Contact Us</a>
-    </nav>
+    <!-- TOP BAR -->
+    <div class="topbar">
+        <div id="menu-btn">☰</div>
+        <h1 class="site-title">Cherupushpam U.P. School</h1>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+        <ul>
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('academics') }}">Academics</a></li>
+            <li><a href="{{ url_for('galary') }}">Gallery</a></li>
+            <li><a href="{{ url_for('aboutus') }}">About Us</a></li>
+            <li><a href="{{ url_for('contactus') }}">Contact Us</a></li>
+        </ul>
+    </div>
 
 
     <header>
         <h1>Academics</h1>
         <p>Fostering Academic Excellence and Lifelong Learning</p>
     </header>
-
     <div class="container">
+        <section class="clubs-section">
+            <h2 class="section-title">Programs & Activities</h2>
+            <h3 class="section-card">
+                We believe in holistic development, offering opportunities in
+            </h3>
+            <div class="clubs-container">
+                <div class="club-card arts">
+                    <div class="club-icon">💃</div>
+                    <div class="club-name">Arts & Cultural Programs</div>
+                    <div class="club-desc">
+                        Encourages creativity and cultural expression through music, dance, drama, and visual arts.
+                    </div>
+                </div>
+
+                <div class="club-card sports">
+                    <div class="club-icon">⚽</div>
+                    <div class="club-name">Sports & Games</div>
+                    <div class="club-desc">
+                        Promotes physical fitness, teamwork, discipline, and competitive spirit through various sports.
+                    </div>
+                </div>
+
+                <div class="club-card quizzes">
+                    <div class="club-icon">🧠</div>
+                    <div class="club-name">Quizzes & Competitions</div>
+                    <div class="club-desc">
+                        Enhances knowledge, logical thinking, and confidence through fun and competitive quizzes.
+                    </div>
+                </div>
+
+                <div class="club-card creative">
+                    <div class="club-icon">💡</div>
+                    <div class="club-name">Innovative & Creative Learning</div>
+                    <div class="club-desc">
+                        Encourages imagination, problem solving, and experimentation through creative learning programs.
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <h2>Curriculum</h2>
+        <p>
+        <ul>
+            <li>LP Section: CBSE syllabus</li>
+            <li>UP Section: State syllabus</li>
+        </ul>
+        </p>
         <!--Clubs Section-->
         <section class="clubs-section" id="clubs">
             <h2 class="section-title">Our School Clubs</h2>
@@ -41,65 +97,76 @@
                 <div class="club-card english">
                     <div class="club-icon">📚</div>
                     <h3 class="club-name">English Club</h3>
-                    <p class="club-desc">This club improves communication skills through debates, storytelling, elocution, drama, and creative
-                writing activities, helping students gain confidence in using English.</p>
+                    <p class="club-desc">This club improves communication skills through debates, storytelling,
+                        elocution, drama, and creative
+                        writing activities, helping students gain confidence in using English.</p>
                 </div>
 
                 <!-- Maths Club -->
                 <div class="club-card maths">
                     <div class="club-icon">➗</div>
                     <h3 class="club-name">Maths Club</h3>
-                    <p class="club-desc">The Maths Club makes learning mathematics fun through puzzles, games, quizzes, and activities that
-                strengthen problem-solving skills and logical thinking.</p>
+                    <p class="club-desc">The Maths Club makes learning mathematics fun through puzzles, games, quizzes,
+                        and activities that
+                        strengthen problem-solving skills and logical thinking.</p>
                 </div>
 
                 <!-- Science Club -->
                 <div class="club-card science">
                     <div class="club-icon">🔬</div>
                     <h3 class="club-name">Science Club</h3>
-                    <p class="club-desc">The Science Club promotes curiosity and innovation by involving students in experiments, science
-                projects, and exhibitions, encouraging scientific thinking.</p>
+                    <p class="club-desc">The Science Club promotes curiosity and innovation by involving students in
+                        experiments, science
+                        projects, and exhibitions, encouraging scientific thinking.</p>
                 </div>
 
                 <!-- Hindi Club -->
                 <div class="club-card hindi">
                     <div class="club-icon">📝</div>
                     <h3 class="club-name">Hindi Club</h3>
-                    <p class="club-desc">This club develops love for the Hindi language through storytelling, poetry recitation, skits, and
-                competitions that enhance language proficiency.</p>
+                    <p class="club-desc">This club develops love for the Hindi language through storytelling, poetry
+                        recitation, skits, and
+                        competitions that enhance language proficiency.</p>
                 </div>
 
                 <!-- Social Science Club -->
                 <div class="club-card social">
                     <div class="club-icon">🌏</div>
                     <h3 class="club-name">Social Science Club</h3>
-                    <p class="club-desc">This club helps students understand society, culture, and history better through role plays, discussions,
-                model-making, and awareness programs on current issues.</p>
+                    <p class="club-desc">This club helps students understand society, culture, and history better
+                        through role plays, discussions,
+                        model-making, and awareness programs on current issues.</p>
                 </div>
 
                 <!-- IT Club -->
                 <div class="club-card it">
                     <div class="club-icon">💻</div>
                     <h3 class="club-name">IT Club</h3>
-                    <p class="club-desc">The IT Club equips students with basic computer skills, digital literacy, and exposure to new
-                technologies, preparing them for the digital world.</p>
+                    <p class="club-desc">The IT Club equips students with basic computer skills, digital literacy, and
+                        exposure to new
+                        technologies, preparing them for the digital world.</p>
                 </div>
 
                 <!-- Arts Club -->
-                <div class="club-card arts">
+                <div class="club-card vidhya">
                     <div class="club-icon">🎨</div>
                     <h3 class="club-name">Vidhyarangam Kalasahithya Vedhi</h3>
-                    <p class="club-desc"> A vibrant platform that nurtures creativity and artistic talents. Students get opportunities to
-                participate in poetry, story writing, drama, and cultural activities that enrich their imagination and
-                expression.</p>
+                    <p class="club-desc"> A vibrant platform that nurtures creativity and artistic talents. Students get
+                        opportunities to
+                        participate in poetry, story writing, drama, and cultural activities that enrich their
+                        imagination and
+                        expression.</p>
                 </div>
-
             </div>
         </section>
 
 
     </div>
-
+    <script>
+        document.getElementById("menu-btn").onclick = function () {
+            document.getElementById("sidebar").classList.toggle("open");
+        };
+    </script>
     <footer>
         <p>&copy; 2025 [School Name]. All rights reserved. </p>
     </footer>

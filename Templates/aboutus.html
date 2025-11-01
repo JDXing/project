@@ -11,13 +11,22 @@
 
 <body>
 
-    <nav>
-        <a href="{{ url_for('home') }}">Home</a>
-        <a href="{{ url_for('academics') }}">Academics</a>
-        <a href="{{ url_for('galary') }}">Gallery</a>
-        <a href="{{ url_for('aboutus') }}">About Us</a>
-        <a href="{{ url_for('contactus') }}">Contact</a>
-    </nav>
+    <!-- TOP BAR -->
+    <div class="topbar">
+        <div id="menu-btn">☰</div>
+        <h1 class="site-title">Cherupushpam U.P. School</h1>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+        <ul>
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('academics') }}">Academics</a></li>
+            <li><a href="{{ url_for('galary') }}">Gallery</a></li>
+            <li><a href="{{ url_for('aboutus') }}">About Us</a></li>
+            <li><a href="{{ url_for('contactus') }}">Contact Us</a></li>
+        </ul>
+    </div>
 
     <header>
         <h1>About Us</h1>
@@ -27,16 +36,44 @@
     <div class="container">
         <section>
             <p>
-                Welcome to Cherupushpam U.P. School, Therthally - a place where learning is inspired by Truth, Love, and
-                Service.
-                Founded in 1970, our school is an unaided Christian minority institution operating under the direction
-                and control
-                of the Sanjos Province of the Missionary Sisters of Mary Immaculate (MSMI) Congregation, Kannur.
+                Welcome to Cherupushpam U.P. School, Therthally, an unaided Christian minority institution
+                founded in 1970 under the Sanjos Province of the Missionary Sisters of Mary Immaculate (MSMI)
+                Congregation, Kannur.
             </p>
             <p>
-                We offer CBSE syllabus for LP classes and State syllabus for UP classes, ensuring comprehensive and
-                inclusive education for every child.
+                Guided by our motto - Truth, Love, and Service - we are dedicated to providing comprehensive,
+                holistic, and value-based education. We follow CBSE syllabus for LP and State syllabus for UP,
+                ensuring quality education that nurtures academic excellence and character formation.
             </p>
+            <p>
+                Our school offers smart classrooms, spoken English classes, library, IT lab, playgrounds, and
+                school bus facilities. We encourage students to explore their talents through arts, sports,
+                quizzes, cultural and innovative programs.
+            </p>
+            <p>
+                Together, we prepare students to become responsible, patriotic, and compassionate citizens who
+                contribute to society with love and integrity.
+            </p>
+
+            <h2>Our History</h2>
+            <p>Cherupushpam U.P. School, Therthally is an unaided Christian Minority School functioning under
+                the direction and control of the Sanjos Province of the Missionary Sisters of Mary Immaculate
+                (MSMI) Congregation, Kannur, Kerala. MSMI, a Christian Religious Congregation founded in 1962 by Rev.
+                Msgr. C.J. Varkey, a great
+                visionary, is renowned in India and abroad for its valuable contribution in various fields. The
+                Congregation manages numerous well-established centres including schools, hospitals, media and
+                communication centres, homes for the aged, counselling centres, retreat centres, social welfare
+                projects, and training institutes. Its services extend across Kerala, Karnataka, Tamil Nadu,
+                Andhra Pradesh, Uttar Pradesh, Delhi, Punjab, Jammu, Madhya Pradesh, Bhopal, Maharashtra, and
+                several parts of the world. Cherupushpam U.P. School, Therthally, is a co-educational institution
+                offering CBSE syllabus for
+                LP section and State syllabus for UP section. The school is open to children of all communities
+                and aims to provide quality education to all irrespective of caste, creed, or religion.
+                Guided by the motto “Truth, Love and Service,” the institution strives to create intellectually
+                sound, emotionally mature, morally upright, socially responsible, and spiritually inspired
+                individuals who can contribute positively to society and the nation.
+            </p>
+
             <h2>Our Vision</h2>
             <p>
                 To provide comprehensive, holistic, and value-based education that empowers each student as a human
@@ -59,11 +96,7 @@
                 We are blessed to have St. Little Flower as our heavenly patron, inspiring us to walk the path of
                 simplicity, love, and dedication.
             </p>
-            <h2>Curriculum</h2>
-            <ul>
-                <li>LP Section: CBSE syllabus</li>
-                <li>UP Section: State syllabus</li>
-            </ul>
+
             <p>
                 This combination ensures quality education that meets diverse needs and learning levels.
             </p>
@@ -76,22 +109,6 @@
                 <li>Playgrounds for sports & games</li>
                 <li>School bus facilities</li>
                 <li>Morning and evening classes for extra support</li>
-            </ul>
-            <h2>Activities</h2>
-            <p id="p1">We believe in holistic development, offering opportunities in:</p>
-            <ul>
-                <li>
-                    Arts & Cultural Programs
-                </li>
-                <li>
-                    Sports & Games
-                </li>
-                <li>
-                    Quizzes & Competitions
-                </li>
-                <li>
-                    Innovative and Creative Learning Programs
-                </li>
             </ul>
             <p>
                 At Cherupushpam U.P. School, Therthally, education is a joyful journey.
@@ -182,6 +199,11 @@
             </section>
         </section>
     </div>
+    <script>
+        document.getElementById("menu-btn").onclick = function () {
+            document.getElementById("sidebar").classList.toggle("open");
+        };
+    </script>
     <footer>
         <p>&copy; 2025 [School Name]. All rights reserved.</p>
     </footer>
