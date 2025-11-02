@@ -77,7 +77,8 @@ h2 {
 /* ===== TOP BAR ===== */
 .topbar {
     height: 55px;
-    background: #004d99; /* your site color */
+    background: #004d99;
+    /* your site color */
     color: white;
     display: flex;
     align-items: center;
@@ -88,7 +89,7 @@ h2 {
     left: 0;
     width: 100%;
     z-index: 20;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
 }
 
 /* Site Title */
@@ -106,6 +107,7 @@ h2 {
     border-radius: 6px;
     transition: 0.3s;
 }
+
 #menu-btn:hover {
     background: #1b263b;
 }
@@ -114,13 +116,15 @@ h2 {
 .sidebar {
     position: fixed;
     top: 55px;
-    left: -240px; /* hidden initially */
+    left: -240px;
+    /* hidden initially */
     width: 240px;
     height: 100vh;
-    background: #004d99; /* match topbar */
+    background: #004d99;
+    /* match topbar */
     padding-top: 20px;
     transition: 0.4s ease;
-    box-shadow: 5px 0 15px rgba(0,0,0,0.35);
+    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.35);
     z-index: 15;
 }
 
@@ -135,19 +139,46 @@ h2 {
 }
 
 .sidebar ul li {
-    margin: 0;
-    padding: 0;
+    margin: 10px 0;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: all 0.35s ease;
+}
+
+.sidebar.open ul li {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.sidebar.open ul li:nth-child(1) {
+    transition-delay: 0.05s;
+}
+
+.sidebar.open ul li:nth-child(2) {
+    transition-delay: 0.10s;
+}
+
+.sidebar.open ul li:nth-child(3) {
+    transition-delay: 0.15s;
+}
+
+.sidebar.open ul li:nth-child(4) {
+    transition-delay: 0.20s;
+}
+
+.sidebar.open ul li:nth-child(5) {
+    transition-delay: 0.25s;
 }
 
 .sidebar ul li a {
     display: block;
     padding: 12px 20px;
-    margin: 5px 10px;
-    border-radius: 8px;
+    margin: 0 10px;
+    border-radius: 12px;
     font-size: 1.1em;
     color: white;
     text-decoration: none;
-    transition: 0.3s;
+    transition: all 0.3s ease;
 }
 
 .sidebar ul li a:hover {
@@ -171,15 +202,165 @@ h2 {
 .page-section {
     display: none;
 }
+
 .page-section.active-section {
     display: block;
     animation: fadeIn 0.4s;
 }
 
 @keyframes fadeIn {
-    from {opacity:0; transform:translateY(7px);}
-    to {opacity:1; transform:translateY(0);}
+    from {
+        opacity: 0;
+        transform: translateY(7px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
+
+/* ===== Apply Alignment From First CSS ===== */
+.mission-vision,
+.highlights,
+.achievements {
+    display: flex;              /* from 1st CSS */
+    flex-wrap: wrap;            /* from 1st CSS */
+    justify-content: center;    /* from 1st CSS */
+    gap: 30px;                  /* from 1st CSS */
+    margin: 40px 20px;          /* from 1st CSS */
+}
+
+/* ===== MISSION & VISION CARDS (Keep 2nd CSS Colors/Design) ===== */
+.card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 25px;
+    flex: 1;
+    max-width: 400px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+
+    /* Fade-in + translate animation from 1st CSS */
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease-out;
+}
+.card.show-on-scroll {
+    opacity: 1;
+    transform: translateY(0);
+}
+.card h2 {
+    color: #004d99;
+    margin-bottom: 15px;
+}
+.card p {
+    color: #1b263b;
+    line-height: 1.6;
+}
+.card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.35);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* ===== HIGHLIGHT CARDS (Keep 2nd CSS Color Design) ===== */
+.highlight-card {
+    background: #004d99;
+    color: white;
+    padding: 40px 20px;
+    border-radius: 12px;
+    text-align: center;
+    flex: 1;
+    max-width: 250px;
+    cursor: pointer;
+
+    /* Fade from 1st CSS */
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease-out;
+}
+.highlight-card.show-on-scroll {
+    opacity: 1;
+    transform: translateY(0);
+}
+.highlight-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.35);
+    background: #1b3a8a;
+}
+
+/* ===== ACHIEVEMENT CARDS (Keep 2nd CSS Colors) ===== */
+.achievement-card {
+    background-color: white;
+    border-radius: 15px;
+    padding: 30px 25px;
+    flex: 1;
+    max-width: 200px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+
+    /* Fade from 1st CSS */
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease-out;
+}
+.achievement-card.show-on-scroll {
+    opacity: 1;
+    transform: translateY(0);
+}
+.achievement-card h2 {
+    font-size: 2em;
+    color: #004d99;
+    margin-bottom: 10px;
+}
+.achievement-card p {
+    color: #1b263b;
+}
+
+/* FADE-IN ON SCROLL */
+.show-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@keyframes popIn {
+    0% {
+        transform: scale(0.8) translateY(20px);
+        opacity: 0;
+    }
+
+    60% {
+        transform: scale(1.05) translateY(-5px);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+}
+
+@media(max-width:900px) {
+
+    .mission-vision,
+    .highlights,
+    .achievements {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media(max-width:600px) {
+    .hero-overlay h1 {
+        font-size: 32px;
+    }
+
+    .hero-overlay .typing {
+        font-size: 1.2em;
+    }
+}
+
 
 /* Footer */
 footer {
@@ -196,62 +377,84 @@ footer {
 }
 
 .banner {
-      margin-top: 70px;
-      position: relative;
-      width: 100%;
-      height: 80vh;
-      overflow: hidden;
+    margin-top: 70px;
+    position: relative;
+    width: 100%;
+    height: 80vh;
+    overflow: hidden;
+}
+
+.banner img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    animation: fade 10s infinite;
+    transition: opacity 1s ease-in-out;
+}
+
+.banner img:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.banner img:nth-child(2) {
+    animation-delay: 5s;
+}
+
+@keyframes fade {
+    0% {
+        opacity: 0;
     }
 
-    .banner img {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0;
-      animation: fade 10s infinite;
-      transition: opacity 1s ease-in-out;
+    25% {
+        opacity: 1;
     }
 
-    .banner img:nth-child(1) {
-      animation-delay: 0s;
+    50% {
+        opacity: 1;
     }
 
-    .banner img:nth-child(2) {
-      animation-delay: 5s;
+    75% {
+        opacity: 0;
     }
 
-    @keyframes fade {
-      0%   { opacity: 0; }
-      25%   { opacity: 1; }
-      50%  { opacity: 1; }
-      75%  { opacity: 0; }
-      100% { opacity: 0; }
+    100% {
+        opacity: 0;
+    }
+}
+
+.banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    padding: 20px;
+}
+
+.banner-overlay h2 {
+    font-size: 42px;
+    font-weight: 600;
+    line-height: 1.3;
+    animation: fadeText 10s infinite;
+}
+
+@keyframes fadeText {
+
+    0%,
+    45% {
+        opacity: 1;
     }
 
-    .banner-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.35);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      color: white;
-      padding: 20px;
+    50%,
+    100% {
+        opacity: 0;
     }
-
-    .banner-overlay h2 {
-      font-size: 42px;
-      font-weight: 600;
-      line-height: 1.3;
-      animation: fadeText 10s infinite;
-    }
-
-    @keyframes fadeText {
-      0%, 45% { opacity: 1; }
-      50%, 100% { opacity: 0; }
-    }
+}
