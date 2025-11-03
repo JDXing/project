@@ -1,4 +1,8 @@
 /* Reset basic layout */
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -224,11 +228,16 @@ h2 {
 .mission-vision,
 .highlights,
 .achievements {
-    display: flex;              /* from 1st CSS */
-    flex-wrap: wrap;            /* from 1st CSS */
-    justify-content: center;    /* from 1st CSS */
-    gap: 30px;                  /* from 1st CSS */
-    margin: 40px 20px;          /* from 1st CSS */
+    display: flex;
+    /* from 1st CSS */
+    flex-wrap: wrap;
+    /* from 1st CSS */
+    justify-content: center;
+    /* from 1st CSS */
+    gap: 30px;
+    /* from 1st CSS */
+    margin: 40px 20px;
+    /* from 1st CSS */
 }
 
 /* ===== MISSION & VISION CARDS (Keep 2nd CSS Colors/Design) ===== */
@@ -246,44 +255,50 @@ h2 {
     transform: translateY(30px);
     transition: all 0.6s ease-out;
 }
+
 .card.show-on-scroll {
     opacity: 1;
     transform: translateY(0);
 }
+
 .card h2 {
     color: #004d99;
     margin-bottom: 15px;
 }
+
 .card p {
     color: #1b263b;
     line-height: 1.6;
 }
+
 .card:hover {
     transform: translateY(-10px) scale(1.02);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.35);
-    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 15px 30px #1b263b;
+    background: linear-gradient(#004d99,#4fc3f7);
 }
 
 /* ===== HIGHLIGHT CARDS (Keep 2nd CSS Color Design) ===== */
 .highlight-card {
     background: #004d99;
-    color: white;
-    padding: 40px 20px;
-    border-radius: 12px;
-    text-align: center;
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 25px;
     flex: 1;
-    max-width: 250px;
-    cursor: pointer;
-
-    /* Fade from 1st CSS */
+    text-decoration: none;
+    max-width: 400px;
+    box-shadow: 0 8px 20px #1b263b;
+    text-align: center;
     opacity: 0;
     transform: translateY(30px);
     transition: all 0.6s ease-out;
+    color: white;
 }
+
 .highlight-card.show-on-scroll {
     opacity: 1;
     transform: translateY(0);
 }
+
 .highlight-card:hover {
     transform: translateY(-8px) scale(1.03);
     box-shadow: 0 15px 25px rgba(0, 0, 0, 0.35);
@@ -305,17 +320,25 @@ h2 {
     transform: translateY(30px);
     transition: all 0.6s ease-out;
 }
+
 .achievement-card.show-on-scroll {
     opacity: 1;
     transform: translateY(0);
 }
+
 .achievement-card h2 {
     font-size: 2em;
     color: #004d99;
     margin-bottom: 10px;
 }
+
 .achievement-card p {
     color: #1b263b;
+}
+.achievement-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 15px 30px #1b263b;
+    background: linear-gradient(#004d99,#4fc3f7);
 }
 
 /* FADE-IN ON SCROLL */

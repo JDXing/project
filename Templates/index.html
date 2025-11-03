@@ -56,10 +56,11 @@
 
         <!-- HIGHLIGHT CARDS -->
         <section class="highlights">
-            <div class="highlight-card show-on-scroll">📚 Academics</div>
-            <div class="highlight-card show-on-scroll">🎨 Clubs & Activities</div>
-            <div class="highlight-card show-on-scroll">🏆 Events</div>
-            <div class="highlight-card show-on-scroll">🖼 Gallery</div>
+            <a class="highlight-card show-on-scroll" href="{{ url_for('academics') }}#Programs">📚 Programs & Activities</a>
+            <a class="highlight-card show-on-scroll" href="{{ url_for('academics') }}#Clubs">🏫 Clubs</a>
+            <a class="highlight-card show-on-scroll" href="{{ url_for('galary') }}">🖼 Gallery</a>
+            <a class="highlight-card show-on-scroll" href="{{ url_for('aboutus') }}#History">📜 History</a>
+            <a class="highlight-card show-on-scroll" href="{{ url_for('contactus') }}">📞 Contact</a>
         </section>
 
         <!-- ACHIEVEMENTS -->
