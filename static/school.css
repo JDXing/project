@@ -103,6 +103,35 @@ h2 {
     margin: 0;
 }
 
+.face {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 64px;
+  font-weight: 700;
+  background-size: 800% 800%;
+  animation: gradientShift 8s ease infinite, floatText 4s ease-in-out infinite;
+  text-align: center;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+}
+
+/* Floating / subtle vertical motion */
+@keyframes floatText {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Responsive font */
+@media screen and (max-width: 768px) {
+  .site-title {
+    font-size: 48px;
+  }
+}
+@media screen and (max-width: 480px) {
+  .site-title {
+    font-size: 32px;
+  }
+}
+
+
 /* Menu Button (3-line) */
 #menu-btn {
     font-size: 1.9rem;

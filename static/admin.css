@@ -7,6 +7,7 @@ body {
     padding: 0;
     background-color: #f4f4f4;
     color: #333;
+    padding-top: 50px;
 }
 
 header {
@@ -14,11 +15,18 @@ header {
     color: white;
     padding: 20px;
     text-align: center;
+    height: 90px;
+}
+
+header h1 {
+    margin: 0;
+
 }
 
 .topbar {
     height: 55px;
-    background: #004d99; /* your site color */
+    background: #004d99;
+    /* your site color */
     color: white;
     display: flex;
     align-items: center;
@@ -29,7 +37,7 @@ header {
     left: 0;
     width: 100%;
     z-index: 20;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
 }
 
 /* Site Title */

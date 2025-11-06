@@ -1,6 +1,64 @@
-<!--
-Add form to get passowrd with name password
-no need to add username feild
-connect admin_login to a button in admin_login.html
-connect admin_logout to a button in admin.html
->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADMINISTRATOR_LOGIN</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin_login.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/logo.jpg') }}">
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>Admin Login</h2>
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="flash">{{ messages[0] }}</div>
+        {% endif %}
+        {% endwith %}
+
+        <form action="{{ url_for('admin_login') }}" method="POST">
+            <div class="input-wrapper" id="inputWrapper">
+                <input id="pwdBox" name="password" type="password" placeholder="Enter password"
+                    autocomplete="current-password" required />
+                <img id="toggleEye" class="eye-icon" src="{{ url_for('static', filename='images/visible.png') }}"
+                    alt="Toggle Password" title="Show / Hide Password">
+            </div>
+
+            <button type="submit" id="submitBtn">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        const pwd = document.getElementById('pwdBox');
+        const eye = document.getElementById('toggleEye');
+
+        eye.addEventListener('click', () => {
+            const isHidden = pwd.type === 'password';
+            pwd.type = isHidden ? 'text' : 'password';
+            eye.src = isHidden
+                ? "{{ url_for('static', filename='images/hide.png') }}"
+                : "{{ url_for('static', filename='images/visible.png') }}";
+            pwd.focus();
+        });
+
+        const flash = document.querySelector('.flash');
+        const inputWrapper = document.getElementById('inputWrapper');
+
+        if (flash) {
+            inputWrapper.classList.add('shake');
+            if (navigator.vibrate) navigator.vibrate([120, 60, 120]);
+            pwd.focus();
+            pwd.select();
+        }
+    </script>
+
+</body>
+
+</html>
+
+
+</html>
