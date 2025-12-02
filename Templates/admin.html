@@ -64,6 +64,74 @@
         </div>
 
     </div>
+    <div class="admin-box">
+        <div class="gallery-bar">
+            <div class="title">Announcements</div>
+            </div>
+            <input type="text" id="newAnnouncement" placeholder="Type new announcement...">
+            <button class="add-btn" onclick="addAnnouncement()">Add Announcement</button>
+            <button class="clear-btn" onclick="clearAnnouncements()">Clear All</button>
+
+            <ul id="adminList"></ul>
+
+        </div>
+    </div>
+
+    <script>
+        // Load existing announcements
+        let items = JSON.parse(localStorage.getItem("announcements")) || [];
+        let adminList = document.getElementById("adminList");
+
+        function showAnnouncements() {
+            adminList.innerHTML = "";
+
+            if (items.length === 0) {
+                adminList.innerHTML = "<li>No announcements added.</li>";
+                return;
+            }
+
+            items.forEach((text, index) => {
+                let li = document.createElement("li");
+                li.innerHTML = `${text} 
+                <button class="delete-btn" onclick="deleteAnnouncement(${index})">Delete</button>`;
+                adminList.appendChild(li);
+            });
+        }
+
+        // Add new announcement
+        function addAnnouncement() {
+            let text = document.getElementById("newAnnouncement").value;
+
+            if (text.trim() === "") {
+                alert("Please enter an announcement!");
+                return;
+            }
+
+            items.push(text);
+            localStorage.setItem("announcements", JSON.stringify(items));
+            document.getElementById("newAnnouncement").value = "";
+            showAnnouncements();
+        }
+
+        // Delete one announcement
+        function deleteAnnouncement(i) {
+            items.splice(i, 1);
+            localStorage.setItem("announcements", JSON.stringify(items));
+            showAnnouncements();
+        }
+
+        // Clear all announcements
+        function clearAnnouncements() {
+            if (confirm("Are you sure you want to delete ALL announcements?")) {
+                items = [];
+                localStorage.setItem("announcements", JSON.stringify(items));
+                showAnnouncements();
+            }
+        }
+
+        // Load announcements at start
+        showAnnouncements();
+    </script>
 
     <!-- Hidden Remove Panel -->
     <div id="removePanel">

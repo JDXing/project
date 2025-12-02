@@ -41,6 +41,14 @@
             </div>
         </section>
 
+        <section class="announcements-section">
+            <h2 class="announce-title">📢 Announcements</h2>
+            <div class="announce-card">
+                <ul class="announce-list" id="announcementList">
+                </ul>
+            </div>
+        </section>
+
         <!-- MISSION & VISION -->
         <section class="mission-vision">
             <div class="card show-on-scroll">
@@ -56,7 +64,8 @@
 
         <!-- HIGHLIGHT CARDS -->
         <section class="highlights">
-            <a class="highlight-card show-on-scroll" href="{{ url_for('academics') }}#Programs">📚 Programs & Activities</a>
+            <a class="highlight-card show-on-scroll" href="{{ url_for('academics') }}#Programs">📚 Programs &
+                Activities</a>
             <a class="highlight-card show-on-scroll" href="{{ url_for('academics') }}#Clubs">🏫 Clubs</a>
             <a class="highlight-card show-on-scroll" href="{{ url_for('galary') }}">🖼 Gallery</a>
             <a class="highlight-card show-on-scroll" href="{{ url_for('aboutus') }}#History">📜 History</a>
@@ -85,6 +94,20 @@
     </div>
 
     <script>
+        // Fetch announcements from localStorage
+        let items = JSON.parse(localStorage.getItem("announcements")) || [];
+
+        let list = document.getElementById("announcementList");
+
+        if (items.length === 0) {
+            list.innerHTML = "<li>No announcements available.</li>";
+        } else {
+            items.forEach((text) => {
+                let li = document.createElement("li");
+                li.textContent = text;
+                list.appendChild(li);
+            });
+        }
         // PAGE TRANSITION ON NAVIGATION
         document.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', e => {
