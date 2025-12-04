@@ -1,9 +1,11 @@
 from flask import Flask, flash, render_template, request, redirect, url_for, session
 from functools import wraps
+from dotenv import load_dotenv
+load_dotenv()
 import os
 
 app = Flask(__name__)
-app.secret_key = 'fgf498ufuh8429fj'
+app.secret_key = os.getenv("SECRET_KEY")
 
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
@@ -38,13 +40,17 @@ def galary():
 def academics():
     return render_template('academics.html')
 
+@app.route('/faculty')
+def faculty():
+    return render_template('faculty.html')
+
 @app.route('/admin/login',methods=['GET','POST'])
 def admin_login():
     if request.method == 'POST':
         password = request.form.get('password')
 
         # You can later move this to environment variables for more security
-        if password == 'test_1234':
+        if password == os.getenv("ADMIN_PASSWORD"):
             session['is_admin'] = True
             flash('✅ Logged in successfully as admin!')
             return redirect(url_for('admin'))
