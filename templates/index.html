@@ -24,6 +24,7 @@
         <ul>
             <li><a href="{{ url_for('home') }}">Home</a></li>
             <li><a href="{{ url_for('academics') }}">Academics</a></li>
+            <li><a href="{{ url_for('faculty') }}">Faculty</a></li>
             <li><a href="{{ url_for('galary') }}">Gallery</a></li>
             <li><a href="{{ url_for('aboutus') }}">About Us</a></li>
             <li><a href="{{ url_for('contactus') }}">Contact Us</a></li>
@@ -42,8 +43,8 @@
         </section>
 
         <section class="announcements-section">
-            <h2 class="announce-title">📢 Announcements</h2>
             <div class="announce-card">
+                <h2 class="announce-title">📢 Announcements</h2>
                 <ul class="announce-list" id="announcementList">
                 </ul>
             </div>
@@ -56,9 +57,15 @@
                 <p>To provide quality education, instill values, and nurture future leaders with compassion and
                     knowledge.</p>
             </div>
+
             <div class="card show-on-scroll">
                 <h2>Our Vision</h2>
                 <p>To be a center of academic excellence where students grow intellectually, socially, and morally.</p>
+            </div>
+
+            <div class="card show-on-scroll">
+                <h2>Principal Message</h2>
+                <p>----------</p>
             </div>
         </section>
 
@@ -94,7 +101,6 @@
     </div>
 
     <script>
-        // Fetch announcements from localStorage
         let items = JSON.parse(localStorage.getItem("announcements")) || [];
 
         let list = document.getElementById("announcementList");
@@ -102,12 +108,23 @@
         if (items.length === 0) {
             list.innerHTML = "<li>No announcements available.</li>";
         } else {
-            items.forEach((text) => {
+            // Show only the FIRST 3 announcements
+            items.slice(0, 3).forEach((text) => {
                 let li = document.createElement("li");
                 li.textContent = text;
                 list.appendChild(li);
             });
+
+            // If more announcements exist, show scrollable remaining items
+            if (items.length > 3) {
+                for (let i = 3; i < items.length; i++) {
+                    let li = document.createElement("li");
+                    li.textContent = items[i];
+                    list.appendChild(li);
+                }
+            }
         }
+
         // PAGE TRANSITION ON NAVIGATION
         document.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', e => {
