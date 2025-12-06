@@ -48,8 +48,6 @@ def faculty():
 def admin_login():
     if request.method == 'POST':
         password = request.form.get('password')
-
-        # You can later move this to environment variables for more security
         if password == os.getenv("ADMIN_PASSWORD"):
             session['is_admin'] = True
             flash('✅ Logged in successfully as admin!')
