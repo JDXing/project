@@ -72,6 +72,57 @@ h2 {
     padding: 0;
 }
 
+.announcements-section {
+    width: 90%;
+    margin-left: 80px;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.announce-title {
+    font-size: 28px;
+    color: #004d99;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.announce-card {
+    background: white;
+    width: 90%;
+    max-width: 900px;
+    padding: 20px 25px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    border-left: 6px solid #004d99;
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 10px;
+
+}
+
+.announce-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.announce-list li {
+    background: #f1f7ff;
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    border-left: 5px solid #004d99;
+    font-weight: normal;
+}
+
+.announce-list li:hover {
+    background: #e0efff;
+    transform: translateX(5px);
+    transition: 0.3s ease;
+}
+
 /* Heading */
 .h1 {
     padding: 20px;
@@ -104,31 +155,39 @@ h2 {
 }
 
 .face {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 64px;
-  font-weight: 700;
-  background-size: 800% 800%;
-  animation: gradientShift 8s ease infinite, floatText 4s ease-in-out infinite;
-  text-align: center;
-  text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 64px;
+    font-weight: 700;
+    background-size: 800% 800%;
+    animation: gradientShift 8s ease infinite, floatText 4s ease-in-out infinite;
+    text-align: center;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 /* Floating / subtle vertical motion */
 @keyframes floatText {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
 }
 
 /* Responsive font */
 @media screen and (max-width: 768px) {
-  .site-title {
-    font-size: 48px;
-  }
+    .site-title {
+        font-size: 48px;
+    }
 }
+
 @media screen and (max-width: 480px) {
-  .site-title {
-    font-size: 32px;
-  }
+    .site-title {
+        font-size: 32px;
+    }
 }
 
 
@@ -303,7 +362,7 @@ h2 {
 .card:hover {
     transform: translateY(-10px) scale(1.02);
     box-shadow: 0 15px 30px #1b263b;
-    background: linear-gradient(#004d99,#4fc3f7);
+    background: linear-gradient(#004d99, #4fc3f7);
 }
 
 /* ===== HIGHLIGHT CARDS (Keep 2nd CSS Color Design) ===== */
@@ -334,7 +393,7 @@ h2 {
     background: #1b3a8a;
 }
 
-/* ===== ACHIEVEMENT CARDS (Keep 2nd CSS Colors) ===== */
+/* ===== ACHIEVEMENT CARDS ===== */
 .achievement-card {
     background-color: white;
     border-radius: 15px;
@@ -364,10 +423,11 @@ h2 {
 .achievement-card p {
     color: #1b263b;
 }
+
 .achievement-card:hover {
     transform: translateY(-10px) scale(1.02);
     box-shadow: 0 15px 30px #1b263b;
-    background: linear-gradient(#004d99,#4fc3f7);
+    background: linear-gradient(#004d99, #4fc3f7);
 }
 
 /* FADE-IN ON SCROLL */
