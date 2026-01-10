@@ -40,9 +40,9 @@
             <div class="title">Gallery</div>
             <div class="btn-container">
                 <!-- Upload Form -->
-                <form id="uploadForm" action="{{ url_for('upload_image') }}" method="POST" enctype="multipart/form-data"
-                    style="display:inline;">
+                <form id="uploadForm" action="{{ url_for('upload_image') }}" method="POST" enctype="multipart/form-data">
                     <input type="file" id="fileInput" name="file" multiple accept="image/*,video/*" required hidden>
+                    <input type="text" class="intxt" name="category" placeholder="category(arts,sports)">
                     <button type="button" class="btn add" onclick="triggerFileUpload()">Upload</button>
                 </form>
 

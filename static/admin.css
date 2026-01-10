@@ -245,7 +245,26 @@ button {
     font-size: larger;
 }
 
-.gallery-bar .btn-container {
+.btn-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+#uploadForm{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.intxt{
+    height: 45px;
+    padding: 0 12px;
+    font-size: 16px;
+    min-width: 220px;
+}
+
+.gallery-bar {
     display: flex;
     gap: 10px;
 }
