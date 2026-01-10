@@ -129,18 +129,6 @@ header h1 {
     to {opacity:1; transform:translateY(0);}
 }
 
-footer {
-    background-color: #333;
-    color: white;
-    padding: 5px 0;
-    text-align: center;
-    position: relative;
-    bottom: 0%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
 
 @keyframes fadeOut {
     0% {
@@ -156,3 +144,80 @@ footer {
         display: none;
     }
 }
+.teachers-section {
+        padding: 50px 20px;
+        text-align: center;
+        
+    }
+
+    .section-title {
+        font-size: 32px;
+        margin-bottom: 30px;
+        font-weight: 700;
+        color: #003e7f;
+    }
+
+    /* 4 per row */
+    .teacher-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 25px;
+        width: 75%;
+        margin: auto;
+        height: 200px;
+    }
+
+    /* Responsive for smaller screens */
+    @media (max-width: 1000px) {
+        .teacher-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 600px) {
+        .teacher-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .teacher-card {
+        background: white;
+        border-radius: 12px;
+        padding: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: transform .3s ease, box-shadow .3s ease;
+        opacity: 0;
+        transform: translateY(40px);
+        height: 250px;
+        width: 75%;
+        margin-bottom:  50px;
+    }
+
+    .teacher-card.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .teacher-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    .teacher-card img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+
+    .teacher-card h3 {
+        margin: 5px 0;
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .teacher-card p {
+        font-size: 16px;
+        color: #555;
+    }

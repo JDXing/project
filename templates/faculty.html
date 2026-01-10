@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Faculty</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='academic.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='faculty.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='images/logo.jpg') }}">
 
 </head>
@@ -29,21 +29,89 @@
             <li><a href="{{ url_for('contactus') }}">Contact Us</a></li>
         </ul>
     </div>
-
-
     <header>
-        <h1>Our Faculties</h1>
+        <h1>FACULTY</h1>
+        <p>Our Team Of Passionate Teachers Committed To Delivering Quality Education</p>
     </header>
+    <section class="teachers-section">
 
-    <footer>
-        <p>&copy; 2025 [School Name]. All rights reserved. </p>
-    </footer>
+
+        <div class="teacher-grid">
+            <div class="teacher-card">
+                <img src="static\images\fac\t2.jpg" alt="Sr. Divya Mathew">
+                <h3>Sr. Divya Mathew</h3>
+                <p>Head Mistress</p>
+                
+            </div>
+            <div class="teacher-card">
+                <img src="static\images\fac\t1.jpg" alt="Neena Jose">
+                <h3>Neena Jose</h3>
+            </div>
+            <div class="teacher-card">
+                <img src="static\images\fac\t3.jpg" alt="Sr. Kochurani Sebastian">
+                <h3>Sr. Kochurani Sebastian</h3>
+            </div>
+
+            <div class="teacher-card">
+                <img src="static\images\fac\t4.jpg" alt="Dhilna A">
+                <h3>Dhilna A</h3>
+            </div>
+             <div class="teacher-card">
+                <img src="static\images\fac\t5.jpg" alt="Priya Thomas">
+                <h3>Priya Thomas</h3>
+            </div>
+             <div class="teacher-card">
+                <img src="static\images\fac\t6.jpg" alt="Smitha Sumesh">
+                <h3>Smitha Sumesh</h3>
+            </div>
+             <div class="teacher-card">
+                <img src="static\images\fac\t7.jpg" alt="Saritha V S">
+                <h3>Saritha V S</h3>
+            </div>
+             <div class="teacher-card">
+                <img src="static\images\fac\t8.jpg" alt="Jisha Paul">
+                <h3>Jisha Paul</h3>
+            </div>
+            <div class="teacher-card">
+                <img src="static\images\fac\t9.jpg" alt="Sr. Manju Paul">
+                <h3>Sr. Manju Paul</h3>
+            </div>
+            <div class="teacher-card">
+                <img src="static\images\fac\t10.jpg" alt="Sr. Ancy Mathew">
+                <h3>Sr. Ancy Mathew</h3>
+            </div>
+            <div class="teacher-card">
+                <img src="static\images\fac\t11.jpg" alt="Preema John">
+                <h3>Preema John</h3>
+            </div>
+            <div class="teacher-card">
+                <img src="static\images\fac\t12.jpg" alt="Sr. Saumya Mathew">
+                <h3>Sr. Saumya Mathew</h3>
+            </div>
+
+
+        </div>
+    </section>
+
+
+
     <script>
         document.getElementById("menu-btn").onclick = function () {
             document.getElementById("sidebar").classList.toggle("open");
-    }
-    </script>
+        };
+        const cards = document.querySelectorAll('.teacher-card');
 
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                }
+            });
+        }, { threshold: 0.2 });
+
+        cards.forEach(card => observer.observe(card));
+    </script>
+   
 </body>
 
 </html>
