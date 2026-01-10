@@ -34,16 +34,30 @@
         <p>Explore our visual journey through curated memories</p>
     </header>
 
+    <!-- CATEGORY FOLDERS -->
+    <section class="categories">
+        {% for cat in categories %}
+        <a href="{{ url_for('galary', category=cat) }}" class="folder">
+            📁 {{ cat }}
+        </a>
+        {% endfor %}
+    </section>
+
+    <!-- IMAGE GALLERY -->
     <section class="gallery" id="gallery">
+        {% if selected_category %}
         {% if images %}
         {% for image in images %}
         <div class="gallery-item">
-            <img src="{{ url_for('static', filename='uploads/' + image) }}" alt="{{ image }}"
+            <img src="{{ url_for('static', filename='uploads/' ~ selected_category ~ '/' ~ image) }}"
                 onclick="openLightbox(this.src)">
         </div>
         {% endfor %}
         {% else %}
-        <p>No images uploaded yet.</p>
+        <p>No images in {{ selected_category }}.</p>
+        {% endif %}
+        {% else %}
+        <p>Please select a category.</p>
         {% endif %}
     </section>
 
