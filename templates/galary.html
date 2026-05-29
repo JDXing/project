@@ -36,41 +36,60 @@
 
     <!-- CATEGORY FOLDERS -->
     <section class="categories">
-        {% for cat in categories %}
-        <a href="{{ url_for('galary', category=cat) }}" class="folder">
-            📁 {{ cat }}
-        </a>
-        {% endfor %}
+        {% if categories %}
+            {% for cat in categories %}
+            <a href="{{ url_for('galary', category=cat) }}"
+               class="folder {% if selected_category == cat %}active{% endif %}">
+                📁 {{ cat }}
+            </a>
+            {% endfor %}
+        {% else %}
+            <p>No albums yet. Check back soon!</p>
+        {% endif %}
     </section>
 
-    <!-- IMAGE GALLERY -->
+    <!-- IMAGE / VIDEO GALLERY -->
     <section class="gallery" id="gallery">
         {% if selected_category %}
-        {% if images %}
-        {% for image in images %}
-        <div class="gallery-item">
-            <img src="{{ url_for('static', filename='uploads/' ~ selected_category ~ '/' ~ image) }}"
-                onclick="openLightbox(this.src)">
-        </div>
-        {% endfor %}
+            {% if images %}
+                {% for image in images %}
+                <div class="gallery-item">
+                    {% set ext = image.rsplit('.', 1)[-1].lower() %}
+                    {% if ext in ['mp4', 'mov', 'avi', 'webm'] %}
+                        <!-- Video file -->
+                        <video
+                            src="{{ url_for('static', filename='uploads/' ~ selected_category ~ '/' ~ image) }}"
+                            controls
+                            preload="metadata">
+                        </video>
+                    {% else %}
+                        <!-- Image file -->
+                        <img
+                            src="{{ url_for('static', filename='uploads/' ~ selected_category ~ '/' ~ image) }}"
+                            alt="{{ image }}"
+                            onclick="openLightbox(this.src)">
+                    {% endif %}
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>No files in <strong>{{ selected_category }}</strong> yet.</p>
+            {% endif %}
         {% else %}
-        <p>No images in {{ selected_category }}.</p>
-        {% endif %}
-        {% else %}
-        <p>Please select a category.</p>
+            <p>Select an album above to view its contents.</p>
         {% endif %}
     </section>
 
-    <div id="lightbox" class="lightbox">
-        <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
-        <img id="lightbox-img" src="">
+    <!-- LIGHTBOX (images only) -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+        <span class="lightbox-close">&times;</span>
+        <img id="lightbox-img" src="" alt="Enlarged view" onclick="event.stopPropagation()">
     </div>
 
     <footer>
-        <p>&copy; 2025 [School Name]. All rights reserved.</p>
+        <p>&copy; 2025 Cherupushpam U.P. School. All rights reserved.</p>
     </footer>
-    <script>
 
+    <script>
         document.getElementById("menu-btn").onclick = function () {
             document.getElementById("sidebar").classList.toggle("open");
         };
@@ -82,9 +101,14 @@
 
         function closeLightbox() {
             document.getElementById("lightbox").style.display = "none";
+            document.getElementById("lightbox-img").src = "";
         }
+
+        // Close lightbox on Escape key
+        document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape") closeLightbox();
+        });
     </script>
 
 </body>
-
 </html>

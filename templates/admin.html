@@ -39,10 +39,24 @@
         <div class="gallery-bar">
             <div class="title">Gallery</div>
             <div class="btn-container">
+
                 <!-- Upload Form -->
                 <form id="uploadForm" action="{{ url_for('upload_image') }}" method="POST" enctype="multipart/form-data">
                     <input type="file" id="fileInput" name="file" multiple accept="image/*,video/*" required hidden>
-                    <input type="text" class="intxt" name="category" placeholder="category(arts,sports)">
+                    <input
+                        type="text"
+                        class="intxt"
+                        name="category"
+                        id="categoryInput"
+                        placeholder="Category (e.g. arts, sports)"
+                        list="existingCategories"
+                        autocomplete="off">
+                    <!-- Suggest existing categories -->
+                    <datalist id="existingCategories">
+                        {% for cat in categories %}
+                        <option value="{{ cat }}">
+                        {% endfor %}
+                    </datalist>
                     <button type="button" class="btn add" onclick="triggerFileUpload()">Upload</button>
                 </form>
 
@@ -51,7 +65,7 @@
             </div>
         </div>
 
-        <!-- Alert Message -->
+        <!-- Flash Messages -->
         <div class="content">
             {% with messages = get_flashed_messages() %}
             {% if messages %}
@@ -65,102 +79,69 @@
         </div>
 
     </div>
+
+    <!-- Announcements Box -->
     <div class="admin-box">
         <div class="announce-bar">
             <div class="title">Announcements</div>
-            </div>
-            <input type="text" id="newAnnouncement" placeholder="Type new announcement...">
-            <button class="add-btn" onclick="addAnnouncement()">Add Announcement</button>
-            <button class="clear-btn" onclick="clearAnnouncements()">Clear All</button>
-
-            <ul id="adminList"></ul>
-
         </div>
+        <input type="text" id="newAnnouncement" placeholder="Type new announcement...">
+        <button class="add-btn" onclick="addAnnouncement()">Add Announcement</button>
+        <button class="clear-btn" onclick="clearAnnouncements()">Clear All</button>
+        <ul id="adminList"></ul>
     </div>
 
-    <script>
-        // Load existing announcements
-        let items = JSON.parse(localStorage.getItem("announcements")) || [];
-        let adminList = document.getElementById("adminList");
-
-        function showAnnouncements() {
-            adminList.innerHTML = "";
-
-            if (items.length === 0) {
-                adminList.innerHTML = "<li>No announcements added.</li>";
-                return;
-            }
-
-            items.forEach((text, index) => {
-                let li = document.createElement("li");
-                li.innerHTML = `${text} 
-                <button class="delete-btn" onclick="deleteAnnouncement(${index})">Delete</button>`;
-                adminList.appendChild(li);
-            });
-        }
-
-        // Add new announcement
-        function addAnnouncement() {
-            let text = document.getElementById("newAnnouncement").value;
-
-            if (text.trim() === "") {
-                alert("Please enter an announcement!");
-                return;
-            }
-
-            items.push(text);
-            localStorage.setItem("announcements", JSON.stringify(items));
-            document.getElementById("newAnnouncement").value = "";
-            showAnnouncements();
-        }
-
-        // Delete one announcement
-        function deleteAnnouncement(i) {
-            items.splice(i, 1);
-            localStorage.setItem("announcements", JSON.stringify(items));
-            showAnnouncements();
-        }
-
-        // Clear all announcements
-        function clearAnnouncements() {
-            if (confirm("Are you sure you want to delete ALL announcements?")) {
-                items = [];
-                localStorage.setItem("announcements", JSON.stringify(items));
-                showAnnouncements();
-            }
-        }
-
-        // Load announcements at start
-        showAnnouncements();
-    </script>
-
     <!-- Hidden Remove Panel -->
-    <div id="removePanel">
-        <button class="close-btn" onclick="closeRemovePanel()">X</button>
+    <div id="removePanel" style="display:none;">
+        <button class="close-btn" onclick="closeRemovePanel()">✕</button>
         <form id="removeForm" action="{{ url_for('remove_image') }}" method="POST">
             <h2>Select Files to Delete</h2>
-            <div class="gallery">
-                {% if images %}
-                {% for file in images %}
-                <label class="gallery-item">
-                    <img src="{{ url_for('static', filename='uploads/' + file) }}" alt="{{ file }}">
-                    <input type="checkbox" name="selected_files" value="{{ file }}">
-                </label>
-                {% else %}
-                <p>No files uploaded yet.</p>
+
+            {% if categories %}
+                {% for cat in categories %}
+                <h3>📁 {{ cat }}</h3>
+                <div class="gallery">
+                    {% if cat_images[cat] %}
+                        {% for file in cat_images[cat] %}
+                        <label class="gallery-item">
+                            {% set ext = file.rsplit('.', 1)[-1].lower() %}
+                            {% if ext in ['mp4', 'mov', 'avi', 'webm'] %}
+                                <video src="{{ url_for('static', filename='uploads/' ~ cat ~ '/' ~ file) }}"
+                                       muted></video>
+                            {% else %}
+                                <img src="{{ url_for('static', filename='uploads/' ~ cat ~ '/' ~ file) }}"
+                                     alt="{{ file }}">
+                            {% endif %}
+                            <!-- value is "category/filename" so the backend can locate the file -->
+                            <input type="checkbox" name="selected_files" value="{{ cat }}/{{ file }}">
+                        </label>
+                        {% endfor %}
+                    {% else %}
+                        <p>No files in this category.</p>
+                    {% endif %}
+                </div>
                 {% endfor %}
-                {% endif %}
-            </div>
+            {% else %}
+                <p>No files uploaded yet.</p>
+            {% endif %}
+
             <button type="submit" class="btn delete">Delete Selected</button>
         </form>
     </div>
 
     <footer>
-        <p>&copy; 2025 [School Name]. All rights reserved.</p>
+        <p>&copy; 2025 Cherupushpam U.P. School. All rights reserved.</p>
     </footer>
 
     <script>
+        /* ── File upload ── */
         function triggerFileUpload() {
+            const cat = document.getElementById('categoryInput').value.trim();
+            if (!cat) {
+                alert('Please enter a category name before uploading.');
+                document.getElementById('categoryInput').focus();
+                return;
+            }
             const fileInput = document.getElementById('fileInput');
             fileInput.click();
             fileInput.onchange = () => {
@@ -170,19 +151,61 @@
             };
         }
 
+        /* ── Remove panel ── */
         function showRemovePanel() {
             document.getElementById('removePanel').style.display = 'block';
         }
-
         function closeRemovePanel() {
             document.getElementById('removePanel').style.display = 'none';
         }
-    </script>
-    <script>
+
+        /* ── Sidebar ── */
         document.getElementById("menu-btn").onclick = function () {
             document.getElementById("sidebar").classList.toggle("open");
         };
-    </script>
-</body>
 
+        /* ── Announcements (localStorage) ── */
+        let items = JSON.parse(localStorage.getItem("announcements")) || [];
+        const adminList = document.getElementById("adminList");
+
+        function showAnnouncements() {
+            adminList.innerHTML = "";
+            if (items.length === 0) {
+                adminList.innerHTML = "<li>No announcements added.</li>";
+                return;
+            }
+            items.forEach((text, index) => {
+                const li = document.createElement("li");
+                li.innerHTML = `${text} <button class="delete-btn" onclick="deleteAnnouncement(${index})">Delete</button>`;
+                adminList.appendChild(li);
+            });
+        }
+
+        function addAnnouncement() {
+            const text = document.getElementById("newAnnouncement").value.trim();
+            if (!text) { alert("Please enter an announcement!"); return; }
+            items.push(text);
+            localStorage.setItem("announcements", JSON.stringify(items));
+            document.getElementById("newAnnouncement").value = "";
+            showAnnouncements();
+        }
+
+        function deleteAnnouncement(i) {
+            items.splice(i, 1);
+            localStorage.setItem("announcements", JSON.stringify(items));
+            showAnnouncements();
+        }
+
+        function clearAnnouncements() {
+            if (confirm("Delete ALL announcements?")) {
+                items = [];
+                localStorage.setItem("announcements", JSON.stringify(items));
+                showAnnouncements();
+            }
+        }
+
+        showAnnouncements();
+    </script>
+
+</body>
 </html>
