@@ -41,21 +41,16 @@
             <div class="btn-container">
 
                 <!-- Upload Form -->
-                <form id="uploadForm" action="{{ url_for('upload_image') }}" method="POST" enctype="multipart/form-data">
+                <form id="uploadForm" action="{{ url_for('upload_image') }}" method="POST"
+                    enctype="multipart/form-data">
                     <input type="file" id="fileInput" name="file" multiple accept="image/*,video/*" required hidden>
-                    <input
-                        type="text"
-                        class="intxt"
-                        name="category"
-                        id="categoryInput"
-                        placeholder="Category (e.g. arts, sports)"
-                        list="existingCategories"
-                        autocomplete="off">
+                    <input type="text" class="intxt" name="category" id="categoryInput"
+                        placeholder="Category (e.g. arts, sports)" list="existingCategories" autocomplete="off">
                     <!-- Suggest existing categories -->
                     <datalist id="existingCategories">
                         {% for cat in categories %}
                         <option value="{{ cat }}">
-                        {% endfor %}
+                            {% endfor %}
                     </datalist>
                     <button type="button" class="btn add" onclick="triggerFileUpload()">Upload</button>
                 </form>
@@ -98,35 +93,67 @@
             <h2>Select Files to Delete</h2>
 
             {% if categories %}
-                {% for cat in categories %}
-                <h3>📁 {{ cat }}</h3>
-                <div class="gallery">
-                    {% if cat_images[cat] %}
-                        {% for file in cat_images[cat] %}
-                        <label class="gallery-item">
-                            {% set ext = file.rsplit('.', 1)[-1].lower() %}
-                            {% if ext in ['mp4', 'mov', 'avi', 'webm'] %}
-                                <video src="{{ url_for('static', filename='uploads/' ~ cat ~ '/' ~ file) }}"
-                                       muted></video>
-                            {% else %}
-                                <img src="{{ url_for('static', filename='uploads/' ~ cat ~ '/' ~ file) }}"
-                                     alt="{{ file }}">
-                            {% endif %}
-                            <!-- value is "category/filename" so the backend can locate the file -->
-                            <input type="checkbox" name="selected_files" value="{{ cat }}/{{ file }}">
-                        </label>
-                        {% endfor %}
+            {% for cat in categories %}
+            <h3>📁 {{ cat }}</h3>
+            <div class="gallery">
+                {% if cat_images[cat] %}
+                {% for file in cat_images[cat] %}
+                <label class="gallery-item">
+                    {% set ext = file.rsplit('.', 1)[-1].lower() %}
+                    {% if ext in ['mp4', 'mov', 'avi', 'webm'] %}
+                    <video src="{{ url_for('static', filename='uploads/' ~ cat ~ '/' ~ file) }}" muted></video>
                     {% else %}
-                        <p>No files in this category.</p>
+                    <img src="{{ url_for('static', filename='uploads/' ~ cat ~ '/' ~ file) }}" alt="{{ file }}">
                     {% endif %}
-                </div>
+                    <!-- value is "category/filename" so the backend can locate the file -->
+                    <input type="checkbox" name="selected_files" value="{{ cat }}/{{ file }}">
+                </label>
                 {% endfor %}
+                {% else %}
+                <p>No files in this category.</p>
+                {% endif %}
+            </div>
+            {% endfor %}
             {% else %}
-                <p>No files uploaded yet.</p>
+            <p>No files uploaded yet.</p>
             {% endif %}
 
             <button type="submit" class="btn delete">Delete Selected</button>
         </form>
+    </div>
+
+    <div class="admin-box">
+        <div class="announce-bar">
+            <div class="title">Upload Poster</div>
+
+            <form action="/upload_poster" method="POST" enctype="multipart/form-data">
+                <input type="file" name="poster" accept="image/*" required>
+                <button type="submit" class="btn add">Upload</button>
+            </form>
+            <button type="button" class="btn remove" onclick="openRemovePosterPanel()">Delete Poster</button>
+
+            <!-- Hidden panel -->
+            <div id="removePosterPanel" style="display:none;">
+                <button type="button" class="close-btn" onclick="closeRemovePosterPanel()">✕</button>
+
+                <form action="{{ url_for('remove_poster') }}" method="POST">
+                    <h2>Select Posters to Delete</h2>
+                    <div class="gallery">
+                        {% if posters %}
+                        {% for poster in posters %}
+                        <label class="gallery-item">
+                            <img src="{{ url_for('static', filename='posters/' + poster) }}" alt="{{ poster }}">
+                            <input type="checkbox" name="selected_posters" value="{{ poster }}">
+                        </label>
+                        {% endfor %}
+                        {% else %}
+                        <p>No posters uploaded yet.</p>
+                        {% endif %}
+                    </div>
+                    <button type="submit" class="btn delete">Delete Selected</button>
+                </form>
+            </div>
+        </div>
     </div>
 
     <footer>
@@ -134,6 +161,14 @@
     </footer>
 
     <script>
+        function openRemovePosterPanel() {
+            document.getElementById("removePosterPanel").style.display = "block";
+        }
+
+        function closeRemovePosterPanel() {
+            document.getElementById("removePosterPanel").style.display = "none";
+        }
+
         /* ── File upload ── */
         function triggerFileUpload() {
             const cat = document.getElementById('categoryInput').value.trim();
@@ -170,21 +205,32 @@
 
         function showAnnouncements() {
             adminList.innerHTML = "";
+
             if (items.length === 0) {
                 adminList.innerHTML = "<li>No announcements added.</li>";
                 return;
             }
-            items.forEach((text, index) => {
+
+            items.forEach((item, index) => {
                 const li = document.createElement("li");
-                li.innerHTML = `${text} <button class="delete-btn" onclick="deleteAnnouncement(${index})">Delete</button>`;
+                li.innerHTML = `<span style="color:gray;font-size:12px;">${item.date}</span>
+                <br>${item.text}<button class="delete-btn" onclick="deleteAnnouncement(${index})">Delete</button>`;
                 adminList.appendChild(li);
             });
         }
 
         function addAnnouncement() {
             const text = document.getElementById("newAnnouncement").value.trim();
-            if (!text) { alert("Please enter an announcement!"); return; }
-            items.push(text);
+            if (!text) {
+                alert("Please enter an announcement!");
+                return;
+            }
+            const announcement = {
+                text: text,
+                date: new Date().toLocaleDateString('en-GB')
+            };
+
+            items.unshift(announcement); // newest first
             localStorage.setItem("announcements", JSON.stringify(items));
             document.getElementById("newAnnouncement").value = "";
             showAnnouncements();
@@ -208,4 +254,5 @@
     </script>
 
 </body>
+
 </html>

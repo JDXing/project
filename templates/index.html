@@ -50,6 +50,16 @@
             </div>
         </section>
 
+        <div class="poster-slider">
+            <div class="slides" id="slides">
+                
+                {% for poster in posters %}
+                <img src="{{ url_for('static', filename='posters/' + poster) }}">
+                {% endfor %}
+
+            </div>
+        </div>
+
         <!-- MISSION & VISION -->
         <section class="mission-vision">
             <div class="card show-on-scroll">
@@ -60,7 +70,8 @@
 
             <div class="card show-on-scroll">
                 <h2>Our Vision</h2>
-                <p>To be a center of academic excellence where students grow intellectually, socially, and morally.</p>
+                <p>To be a center of academic excellence where students grow intellectually, socially, and morally.
+                </p>
             </div>
 
         </section>
@@ -74,51 +85,37 @@
             <a class="highlight-card show-on-scroll" href="{{ url_for('aboutus') }}#History">📜 History</a>
             <a class="highlight-card show-on-scroll" href="{{ url_for('contactus') }}">📞 Contact</a>
         </section>
-
-        <!-- ACHIEVEMENTS -->
-        <section class="achievements">
-            <div class="achievement-card show-on-scroll">
-                <h2 class="counter" data-target="1200">0</h2>
-                <p>Students</p>
-            </div>
-            <div class="achievement-card show-on-scroll">
-                <h2 class="counter" data-target="50">0</h2>
-                <p>Teachers</p>
-            </div>
-            <div class="achievement-card show-on-scroll">
-                <h2 class="counter" data-target="100">0</h2>
-                <p>Events</p>
-            </div>
-            <div class="achievement-card show-on-scroll">
-                <h2 class="counter" data-target="25">0</h2>
-                <p>Years of Excellence</p>
-            </div>
-        </section>
     </div>
 
     <script>
-        let items = JSON.parse(localStorage.getItem("announcements")) || [];
+        let currentSlide = 0;
 
+        const slides = document.getElementById("slides");
+        const totalSlides = slides.children.length;
+        function showSlide(index) {
+
+            if (totalSlides === 0) return;
+            currentSlide = (index + totalSlides) % totalSlides;
+            slides.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+
+        if (totalSlides > 1) {
+            setInterval(() => {
+                showSlide(currentSlide + 1);
+            }, 3000);
+        }
+
+        let items = JSON.parse(localStorage.getItem("announcements")) || [];
         let list = document.getElementById("announcementList");
 
         if (items.length === 0) {
             list.innerHTML = "<li>No announcements available.</li>";
         } else {
-            // Show only the FIRST 3 announcements
-            items.slice(0, 3).forEach((text) => {
+            items.forEach((item) => {
                 let li = document.createElement("li");
-                li.textContent = text;
+                li.innerHTML = `<span style="display:block; text-align:right; color:gray; font-size:12px;">${item.date}</span>${item.text}`;
                 list.appendChild(li);
             });
-
-            // If more announcements exist, show scrollable remaining items
-            if (items.length > 3) {
-                for (let i = 3; i < items.length; i++) {
-                    let li = document.createElement("li");
-                    li.textContent = items[i];
-                    list.appendChild(li);
-                }
-            }
         }
 
         // PAGE TRANSITION ON NAVIGATION
@@ -147,26 +144,6 @@
         }
         window.addEventListener('scroll', revealOnScroll);
         window.addEventListener('load', revealOnScroll);
-
-        // ANIMATED COUNTERS
-        const counters = document.querySelectorAll('.counter');
-        const speed = 200;
-        function animateCounters() {
-            counters.forEach(counter => {
-                const updateCount = () => {
-                    const target = +counter.getAttribute('data-target');
-                    const count = +counter.innerText;
-                    const increment = Math.ceil(target / speed);
-                    if (count < target) { counter.innerText = count + increment; setTimeout(updateCount, 20); }
-                    else { counter.innerText = target; }
-                }
-                const position = counter.getBoundingClientRect().top;
-                const windowHeight = window.innerHeight;
-                if (position < windowHeight - 50 && counter.innerText == '0') updateCount();
-            });
-        }
-        window.addEventListener('scroll', animateCounters);
-        window.addEventListener('load', animateCounters);
 
         // PAGE TRANSITION ON NAVIGATION
         document.querySelectorAll('a').forEach(link => {

@@ -297,23 +297,40 @@ h2 {
 
 .club-card.arts:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 18px #d81b60;
+    box-shadow: 0 8px 18px #E91E63;
 }
 
 .club-card.sports:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 18px #0288d1;
+    box-shadow: 0 8px 18px #43A047;
 }
 
 .club-card.quizzes:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 18px #8e24aa;
+    box-shadow: 0 8px 18px #FB8C00;
 }
 
 .club-card.creative:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 18px #f9a825;
+    box-shadow: 0 8px 18px #FBC02D;
 }
+
+.club-card.band:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 18px #8E44AD;
+}
+
+.club-card.guide:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 18px #26A69A;
+}
+
+.club-card.smart:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 18px #4A90E2;
+}
+
+
 
 .club-icon {
     font-size: 2.5em;
@@ -397,36 +414,68 @@ h2 {
 }
 
 .arts .club-icon {
-    background: #d81b60;
+    background: #E91E63;
 }
 
 .arts .club-name {
-    color: #ad1457;
+    color: #EC4899;
 }
 
 .sports .club-icon {
-    background: #0288d1;
+    background: #43A047;
 }
 
 .sports .club-name {
-    color: #01579b;
+    color: #22C55E;
 }
 
 .quizzes .club-icon {
-    background: #8e24aa;
+    background: #FB8C00;
 }
 
 .quizzes .club-name {
-    color: #6a1b9a;
+    color: #F97316;
 }
 
 .creative .club-icon {
-    background: #f9a825;
+    background: #FBC02D;
+
 }
 
 .creative .club-name {
-    color: #f57f17;
+    color: #EAB308;
 }
+
+.band .club-icon {
+    background: #8E44AD;
+    
+}
+
+.band .club-name {
+    color: #A855F7;
+    
+}
+
+.guide .club-icon {
+    background: #26A69A;
+    
+}
+
+.guide .club-name {
+    color: #14B8A6;
+    
+}
+
+.smart .club-icon {
+    background: #4A90E2;
+    
+}
+
+.smart .club-name {
+    color: #3B82F6;
+    
+}
+
 
 
 @media (max-width: 600px) {

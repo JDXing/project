@@ -281,11 +281,14 @@ button {
 footer {
     background-color: #004d99;
     color: white;
-    padding: 10px;
+    padding: 5px 0;
     text-align: center;
-    position: fixed;
-    bottom: 0;
+    position: relative;
+    bottom: 0%;
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .gallery {
