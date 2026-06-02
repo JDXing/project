@@ -62,7 +62,7 @@
 
         <!-- Flash Messages -->
         <div class="content">
-            {% with messages = get_flashed_messages() %}
+            {% with messages = get_flashed_messages(category_filter=["gallery"]) %}
             {% if messages %}
             <div class="alert-box">
                 {% for message in messages %}
@@ -124,36 +124,50 @@
 
     <div class="admin-box">
         <div class="announce-bar">
-            <div class="title">Upload Poster</div>
+            <div class="title">Poster</div>
 
-            <form action="/upload_poster" method="POST" enctype="multipart/form-data">
-                <input type="file" name="poster" accept="image/*" required>
-                <button type="submit" class="btn add">Upload</button>
+            <form id="posterForm" action="{{ url_for('upload_poster') }}" method="POST" enctype="multipart/form-data">
+                <input type="file" id="posterInput" name="poster" accept="image/*" style="display:none;"
+                    onchange="document.getElementById('posterForm').submit();">
+                <button type="button" class="btn add"
+                    onclick="document.getElementById('posterInput').click();">Upload Poster</button>
             </form>
+
             <button type="button" class="btn remove" onclick="openRemovePosterPanel()">Delete Poster</button>
-
-            <!-- Hidden panel -->
-            <div id="removePosterPanel" style="display:none;">
-                <button type="button" class="close-btn" onclick="closeRemovePosterPanel()">✕</button>
-
-                <form action="{{ url_for('remove_poster') }}" method="POST">
-                    <h2>Select Posters to Delete</h2>
-                    <div class="gallery">
-                        {% if posters %}
-                        {% for poster in posters %}
-                        <label class="gallery-item">
-                            <img src="{{ url_for('static', filename='posters/' + poster) }}" alt="{{ poster }}">
-                            <input type="checkbox" name="selected_posters" value="{{ poster }}">
-                        </label>
-                        {% endfor %}
-                        {% else %}
-                        <p>No posters uploaded yet.</p>
-                        {% endif %}
-                    </div>
-                    <button type="submit" class="btn delete">Delete Selected</button>
-                </form>
-            </div>
         </div>
+
+        <div class="content">
+            {% with messages = get_flashed_messages(category_filter=["poster"]) %}
+            {% if messages %}
+            <div class="alert-box">
+                {% for message in messages %}
+                <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+    <!-- Hidden panel -->
+    <div id="removePosterPanel" style="display:none;">
+        <button type="button" class="close-btn" onclick="closeRemovePosterPanel()">✕</button>
+
+        <form action="{{ url_for('remove_poster') }}" method="POST">
+            <h2>Select Posters to Delete</h2>
+            <div class="poster">
+                {% if posters %}
+                {% for poster in posters %}
+                <label class="poster-item">
+                    <img src="{{ url_for('static', filename='posters/' + poster) }}" alt="{{ poster }}">
+                    <input type="checkbox" name="selected_posters" value="{{ poster }}">
+                </label>
+                {% endfor %}
+                {% else %}
+                <p>No posters uploaded yet.</p>
+                {% endif %}
+            </div>
+            <button type="submit" class="btn delete">Delete Selected</button>
+        </form>
     </div>
 
     <footer>
