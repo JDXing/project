@@ -1,5 +1,6 @@
 from flask import Flask, flash, render_template, request, redirect, url_for, session
 from functools import wraps
+from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 load_dotenv()
 import os
@@ -8,8 +9,11 @@ app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
 
 UPLOAD_FOLDER = 'static/uploads'
+POSTER_FOLDER = 'static/posters'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['POSTER_FOLDER'] = POSTER_FOLDER
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+os.makedirs(app.config['POSTER_FOLDER'], exist_ok=True)
 
 ALLOWED_IMAGE_EXTS = {'png', 'jpg', 'jpeg', 'heic', 'webp'}
 ALLOWED_VIDEO_EXTS = {'mp4', 'mov', 'avi', 'webm'}
@@ -32,9 +36,21 @@ def get_categories():
         if os.path.isdir(os.path.join(base, d))
     ]
 
+def get_posters():
+    """Return list of poster filenames."""
+    base = app.config['POSTER_FOLDER']
+    if not os.path.isdir(base):
+        return []
+    return [
+        f for f in os.listdir(base)
+        if os.path.isfile(os.path.join(base, f))
+        and f.rsplit('.', 1)[-1].lower() in ALLOWED_IMAGE_EXTS
+    ]
+
 @app.route('/')
 def home():
-    return render_template('index.html')
+    posters = get_posters()
+    return render_template('index.html', posters=posters)
 
 @app.route('/aboutus')
 def aboutus():
@@ -103,13 +119,14 @@ def admin():
             f for f in os.listdir(cat_folder)
             if f.rsplit('.', 1)[-1].lower() in ALLOWED_EXTS
         ]
-    return render_template('admin.html', categories=categories, cat_images=cat_images)
+    posters = get_posters()
+    return render_template('admin.html', categories=categories, cat_images=cat_images, posters=posters)
 
 @app.route('/admin/upload', methods=['POST'])
 @admin_required
 def upload_image():
     if 'file' not in request.files:
-        flash('❌ Missing file in request.')
+        flash('❌ Missing file in request.', 'gallery')
         return redirect(url_for('admin'))
 
     # Sanitise category: lowercase, strip spaces, fallback to 'general'
@@ -130,19 +147,20 @@ def upload_image():
 
     for file in files:
         if file.filename == '':
-            flash('⚠️ One file had no name — skipped.')
+            flash('⚠️ One file had no name — skipped.', 'gallery')
             continue
 
         ext = file.filename.rsplit('.', 1)[-1].lower()
         if ext not in ALLOWED_EXTS:
-            flash(f'🚫 Invalid file type: {file.filename}')
+            flash(f'🚫 Invalid file type: {file.filename}', 'gallery')
             continue
 
-        save_path = os.path.join(cat_folder, file.filename)
+        filename = secure_filename(file.filename)
+        save_path = os.path.join(cat_folder, filename)
         file.save(save_path)
         uploaded += 1
 
-    flash(f'✅ {uploaded} of {n} file(s) uploaded to "{category}".')
+    flash(f'✅ {uploaded} of {n} file(s) uploaded to "{category}".', 'gallery')
     return redirect(url_for('admin'))
 
 @app.route('/admin/remove', methods=['POST'])
@@ -152,17 +170,72 @@ def remove_image():
     selected_files = request.form.getlist('selected_files')
 
     if not selected_files:
-        flash("⚠️ No files selected for deletion!")
+        flash("⚠️ No files selected for deletion!", 'gallery')
         return redirect(url_for('admin'))
 
     deleted = 0
+    base = os.path.abspath(app.config['UPLOAD_FOLDER'])
     for entry in selected_files:
-        path = os.path.join(app.config['UPLOAD_FOLDER'], entry)
+        # Prevent path traversal
+        norm = os.path.normpath(entry)
+        if norm.startswith('..') or os.path.isabs(norm):
+            continue
+        path = os.path.abspath(os.path.join(app.config['UPLOAD_FOLDER'], norm))
+        if not path.startswith(base):
+            continue
         if os.path.isfile(path):
             os.remove(path)
             deleted += 1
 
-    flash(f"🗑️ {deleted} of {len(selected_files)} file(s) deleted.")
+    flash(f"🗑️ {deleted} of {len(selected_files)} file(s) deleted.", 'gallery')
+    return redirect(url_for('admin'))
+
+@app.route('/admin/poster/upload', methods=['POST'])
+@admin_required
+def upload_poster():
+    if 'poster' not in request.files:
+        flash('❌ Missing poster file in request.', 'poster')
+        return redirect(url_for('admin'))
+
+    file = request.files['poster']
+
+    if file.filename == '':
+        flash('⚠️ No file selected.', 'poster')
+        return redirect(url_for('admin'))
+
+    ext = file.filename.rsplit('.', 1)[-1].lower()
+    if ext not in ALLOWED_IMAGE_EXTS:
+        flash(f'🚫 Invalid file type: {file.filename}', 'poster')
+        return redirect(url_for('admin'))
+
+    filename = secure_filename(file.filename)
+    save_path = os.path.join(app.config['POSTER_FOLDER'], filename)
+    file.save(save_path)
+
+    flash('✅ Poster uploaded successfully.', 'poster')
+    return redirect(url_for('admin'))
+
+@app.route('/admin/poster/remove', methods=['POST'])
+@admin_required
+def remove_poster():
+    selected_posters = request.form.getlist('selected_posters')
+
+    if not selected_posters:
+        flash("⚠️ No posters selected for deletion!", 'poster')
+        return redirect(url_for('admin'))
+
+    deleted = 0
+    base = os.path.abspath(app.config['POSTER_FOLDER'])
+    for entry in selected_posters:
+        filename = secure_filename(entry)
+        path = os.path.abspath(os.path.join(app.config['POSTER_FOLDER'], filename))
+        if not path.startswith(base):
+            continue
+        if os.path.isfile(path):
+            os.remove(path)
+            deleted += 1
+
+    flash(f"🗑️ {deleted} of {len(selected_posters)} poster(s) deleted.", 'poster')
     return redirect(url_for('admin'))
 
 if __name__ == '__main__':
