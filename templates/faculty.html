@@ -35,65 +35,17 @@
     </header>
     <section class="teachers-section">
 
-
         <div class="teacher-grid">
             <div class="teacher-card">
-                <img src="static\images\fac\t2.jpg" alt="Sr. Divya Mathew">
-                <h3>Sr. Divya Mathew</h3>
-                <p>Head Mistress</p>
-                
-            </div>
-            <div class="teacher-card">
-                <img src="static\images\fac\t1.jpg" alt="Neena Jose">
-                <h3>Neena Jose</h3>
-            </div>
-            <div class="teacher-card">
-                <img src="static\images\fac\t3.jpg" alt="Sr. Kochurani Sebastian">
-                <h3>Sr. Kochurani Sebastian</h3>
-            </div>
+                {% for teacher in teachers %}
 
-            <div class="teacher-card">
-                <img src="static\images\fac\t4.jpg" alt="Dhilna A">
-                <h3>Dhilna A</h3>
-            </div>
-             <div class="teacher-card">
-                <img src="static\images\fac\t5.jpg" alt="Priya Thomas">
-                <h3>Priya Thomas</h3>
-            </div>
-             <div class="teacher-card">
-                <img src="static\images\fac\t6.jpg" alt="Smitha Sumesh">
-                <h3>Smitha Sumesh</h3>
-            </div>
-             <div class="teacher-card">
-                <img src="static\images\fac\t7.jpg" alt="Saritha V S">
-                <h3>Saritha V S</h3>
-            </div>
-             <div class="teacher-card">
-                <img src="static\images\fac\t8.jpg" alt="Jisha Paul">
-                <h3>Jisha Paul</h3>
-            </div>
-            <div class="teacher-card">
-                <img src="static\images\fac\t9.jpg" alt="Sr. Manju Paul">
-                <h3>Sr. Manju Paul</h3>
-            </div>
-            <div class="teacher-card">
-                <img src="static\images\fac\t10.jpg" alt="Sr. Ancy Mathew">
-                <h3>Sr. Ancy Mathew</h3>
-            </div>
-            <div class="teacher-card">
-                <img src="static\images\fac\t11.jpg" alt="Preema John">
-                <h3>Preema John</h3>
-            </div>
-            <div class="teacher-card">
-                <img src="static\images\fac\t12.jpg" alt="Sr. Saumya Mathew">
-                <h3>Sr. Saumya Mathew</h3>
-            </div>
+                    <img src="{{ url_for('static',filename='faculty/' + teacher.photo) }}" alt="{{ teacher.name }}">
+                    <h3>{{ teacher.name }}</h3>
 
-
+                </div>
+                {% endfor %}
         </div>
     </section>
-
-
 
     <script>
         document.getElementById("menu-btn").onclick = function () {
@@ -111,7 +63,7 @@
 
         cards.forEach(card => observer.observe(card));
     </script>
-   
+
 </body>
 
 </html>

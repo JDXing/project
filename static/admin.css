@@ -251,13 +251,13 @@ button {
     gap: 15px;
 }
 
-#uploadForm{
+#uploadForm {
     display: flex;
     align-items: center;
     gap: 15px;
 }
 
-.intxt{
+.intxt {
     height: 45px;
     padding: 0 12px;
     font-size: 16px;
@@ -289,6 +289,35 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.faculty-actions {
+    display: flex;
+    gap: 15px;
+    margin-left: auto;
+    align-items: center;
+}
+
+.faculty-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.faculty-item {
+    width: 200px;
+    margin: 10px;
+    position: relative;
+    background: white;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+}
+
+.faculty-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
 }
 
 .gallery {
@@ -417,7 +446,24 @@ footer {
     object-fit: cover;
 }
 
-#removePanel {
+.poster-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-left: auto;
+}
+
+#posterForm {
+    margin: 0;
+}
+
+.poster-actions .btn {
+    margin: 0;
+}
+
+#removePanel,
+#removePosterPanel,
+#removeFacultyPanel {
     display: none;
     position: fixed;
     top: 50%;
@@ -444,7 +490,9 @@ footer {
     justify-content: flex-start;
 }
 
-#removePanel .close-btn {
+#removePanel .close-btn,
+#removePanel .close-btn,
+#removeFacultyPanel {
     position: absolute;
     top: 10px;
     right: 15px;

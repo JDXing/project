@@ -122,18 +122,26 @@
         </form>
     </div>
 
+    <!-- poster -->
     <div class="admin-box">
         <div class="announce-bar">
             <div class="title">Poster</div>
 
-            <form id="posterForm" action="{{ url_for('upload_poster') }}" method="POST" enctype="multipart/form-data">
-                <input type="file" id="posterInput" name="poster" accept="image/*" style="display:none;"
-                    onchange="document.getElementById('posterForm').submit();">
-                <button type="button" class="btn add"
-                    onclick="document.getElementById('posterInput').click();">Upload Poster</button>
-            </form>
+            <div class="poster-actions">
+                <form id="posterForm" action="{{ url_for('upload_poster') }}" method="POST"
+                    enctype="multipart/form-data">
 
-            <button type="button" class="btn remove" onclick="openRemovePosterPanel()">Delete Poster</button>
+                    <input type="file" id="posterInput" name="poster" accept="image/*" style="display:none;"
+                        onchange="document.getElementById('posterForm').submit();">
+
+                    <button type="button" class="btn add"
+                        onclick="document.getElementById('posterInput').click();">Upload Poster</button>
+                </form>
+
+                <button type="button" class="btn remove" onclick="openRemovePosterPanel()">
+                    Delete Poster
+                </button>
+            </div>
         </div>
 
         <div class="content">
@@ -148,11 +156,12 @@
             {% endwith %}
         </div>
     </div>
+
     <!-- Hidden panel -->
     <div id="removePosterPanel" style="display:none;">
         <button type="button" class="close-btn" onclick="closeRemovePosterPanel()">✕</button>
 
-        <form action="{{ url_for('remove_poster') }}" method="POST">
+        <form id="removeform" action="{{ url_for('remove_poster') }}" method="POST">
             <h2>Select Posters to Delete</h2>
             <div class="poster">
                 {% if posters %}
@@ -170,11 +179,65 @@
         </form>
     </div>
 
+    <!-- faculty -->
+    <div class="admin-box">
+        <div class="announce-bar">
+            <div class="title">Faculty</div>
+
+            <div class="faculty-actions">
+                <form id="facultyForm" action="{{ url_for('upload_teacher') }}" method="POST"
+                    enctype="multipart/form-data">
+
+                    <input type="text" name="teacher_name" placeholder="Teacher Name" required>
+                    <input type="file" id="teacherPhoto" name="teacher_photo" accept="image/*" required>
+
+                    <button type="submit" class="btn add">Add Teacher</button>
+                </form>
+
+                <button class="btn remove" onclick="openFacultyRemovePanel()">Delete Teacher</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hiden Panel -->
+    <div id="removeFacultyPanel" style="display:none;">
+        <button class="close-btn" onclick="closeFacultyRemovePanel()">✕</button>
+        <form action="{{ url_for('remove_teacher') }}" method="POST">
+            <h2>Select Teachers to Delete</h2>
+            <div class="faculty-gallery">
+                {% for teacher in teachers %}
+                <label class="faculty-item">
+
+                    <img src="{{ url_for('static',filename='faculty/' + teacher.photo) }}">
+                    <p>{{ teacher.name }}</p>
+                    <input type="checkbox" name="selected_teachers" value="{{ teacher.photo }}">
+                </label>
+                {% endfor %}
+
+            </div>
+
+            <button type="submit" class="btn delete">Delete Selected</button>
+
+        </form>
+
+    </div>
+
     <footer>
         <p>&copy; 2025 Cherupushpam U.P. School. All rights reserved.</p>
     </footer>
 
     <script>
+
+        function openFacultyRemovePanel() {
+            document.getElementById("removeFacultyPanel")
+                .style.display = "block";
+        }
+
+        function closeFacultyRemovePanel() {
+            document.getElementById("removeFacultyPanel")
+                .style.display = "none";
+        }
+
         function openRemovePosterPanel() {
             document.getElementById("removePosterPanel").style.display = "block";
         }
