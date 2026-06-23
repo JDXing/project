@@ -179,47 +179,62 @@
         </form>
     </div>
 
-    <!-- faculty -->
+    <!-- Faculty -->
     <div class="admin-box">
-        <div class="announce-bar">
-            <div class="title">Faculty</div>
 
-            <div class="faculty-actions">
+        <div class="gallery-bar">
+            <div class="title">Faculty</div>
+            <div class="btn-container">
+
+                <!-- Add Teacher Form (mirrors gallery upload form) -->
                 <form id="facultyForm" action="{{ url_for('upload_teacher') }}" method="POST"
                     enctype="multipart/form-data">
-
-                    <input type="text" name="teacher_name" placeholder="Teacher Name" required>
-                    <input type="file" id="teacherPhoto" name="teacher_photo" accept="image/*" required>
-
-                    <button type="submit" class="btn add">Add Teacher</button>
+                    <input type="file" id="teacherPhotoInput" name="teacher_photo" accept="image/*" required hidden>
+                    <input type="text" class="intxt" name="teacher_name" id="teacherNameInput"
+                        placeholder="Teacher Name" required autocomplete="off">
+                    <button type="button" class="btn add" onclick="triggerTeacherUpload()">Add Teacher</button>
                 </form>
 
-                <button class="btn remove" onclick="openFacultyRemovePanel()">Delete Teacher</button>
+                <!-- Remove Button -->
+                <button type="button" class="btn remove" onclick="showFacultyRemovePanel()">Remove</button>
             </div>
         </div>
+
+        <!-- Flash Messages -->
+        <div class="content">
+            {% with messages = get_flashed_messages(category_filter=["faculty"]) %}
+            {% if messages %}
+            <div class="alert-box">
+                {% for message in messages %}
+                <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
+        </div>
+
     </div>
 
-    <!-- Hiden Panel -->
+    <!-- Hidden Faculty Remove Panel (mirrors gallery remove panel) -->
     <div id="removeFacultyPanel" style="display:none;">
         <button class="close-btn" onclick="closeFacultyRemovePanel()">✕</button>
         <form action="{{ url_for('remove_teacher') }}" method="POST">
             <h2>Select Teachers to Delete</h2>
-            <div class="faculty-gallery">
+            <div class="gallery">
+                {% if teachers %}
                 {% for teacher in teachers %}
-                <label class="faculty-item">
-
-                    <img src="{{ url_for('static',filename='faculty/' + teacher.photo) }}">
-                    <p>{{ teacher.name }}</p>
+                <label class="gallery-item">
+                    <img src="{{ url_for('static', filename='faculty/' + teacher.photo) }}" alt="{{ teacher.name }}">
+                    <p style="margin:6px 0 4px; font-size:13px; font-weight:600;">{{ teacher.name }}</p>
                     <input type="checkbox" name="selected_teachers" value="{{ teacher.photo }}">
                 </label>
                 {% endfor %}
-
+                {% else %}
+                <p>No teachers added yet.</p>
+                {% endif %}
             </div>
-
             <button type="submit" class="btn delete">Delete Selected</button>
-
         </form>
-
     </div>
 
     <footer>
@@ -228,14 +243,29 @@
 
     <script>
 
-        function openFacultyRemovePanel() {
-            document.getElementById("removeFacultyPanel")
-                .style.display = "block";
+        /* ── Faculty upload ── */
+        function triggerTeacherUpload() {
+            const name = document.getElementById('teacherNameInput').value.trim();
+            if (!name) {
+                alert('Please enter a teacher name before uploading.');
+                document.getElementById('teacherNameInput').focus();
+                return;
+            }
+            const photoInput = document.getElementById('teacherPhotoInput');
+            photoInput.click();
+            photoInput.onchange = () => {
+                if (photoInput.files.length > 0) {
+                    document.getElementById('facultyForm').submit();
+                }
+            };
         }
 
+        /* ── Faculty remove panel ── */
+        function showFacultyRemovePanel() {
+            document.getElementById('removeFacultyPanel').style.display = 'block';
+        }
         function closeFacultyRemovePanel() {
-            document.getElementById("removeFacultyPanel")
-                .style.display = "none";
+            document.getElementById('removeFacultyPanel').style.display = 'none';
         }
 
         function openRemovePosterPanel() {

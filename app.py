@@ -4,16 +4,24 @@ from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 load_dotenv()
 import os
+import json
+import uuid
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
 
 UPLOAD_FOLDER = 'static/uploads'
 POSTER_FOLDER = 'static/posters'
+FACULTY_FOLDER = 'static/faculty'
+FACULTY_DATA_FILE = os.path.join(FACULTY_FOLDER, 'faculty.json')
+
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['POSTER_FOLDER'] = POSTER_FOLDER
+app.config['FACULTY_FOLDER'] = FACULTY_FOLDER
+
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 os.makedirs(app.config['POSTER_FOLDER'], exist_ok=True)
+os.makedirs(app.config['FACULTY_FOLDER'], exist_ok=True)
 
 ALLOWED_IMAGE_EXTS = {'png', 'jpg', 'jpeg', 'heic', 'webp'}
 ALLOWED_VIDEO_EXTS = {'mp4', 'mov', 'avi', 'webm'}
@@ -46,6 +54,24 @@ def get_posters():
         if os.path.isfile(os.path.join(base, f))
         and f.rsplit('.', 1)[-1].lower() in ALLOWED_IMAGE_EXTS
     ]
+
+def get_teachers():
+    """Return list of teacher dicts: [{'name': ..., 'photo': ...}, ...]."""
+    if not os.path.isfile(FACULTY_DATA_FILE):
+        return []
+    try:
+        with open(FACULTY_DATA_FILE, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        if isinstance(data, list):
+            return data
+        return []
+    except (json.JSONDecodeError, OSError):
+        return []
+
+def save_teachers(teachers):
+    """Persist the teachers list to disk."""
+    with open(FACULTY_DATA_FILE, 'w', encoding='utf-8') as f:
+        json.dump(teachers, f, ensure_ascii=False, indent=2)
 
 @app.route('/')
 def home():
@@ -86,7 +112,8 @@ def academics():
 
 @app.route('/faculty')
 def faculty():
-    return render_template('faculty.html')
+    teachers = get_teachers()
+    return render_template('faculty.html', teachers=teachers)
 
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
@@ -120,7 +147,14 @@ def admin():
             if f.rsplit('.', 1)[-1].lower() in ALLOWED_EXTS
         ]
     posters = get_posters()
-    return render_template('admin.html', categories=categories, cat_images=cat_images, posters=posters)
+    teachers = get_teachers()
+    return render_template(
+        'admin.html',
+        categories=categories,
+        cat_images=cat_images,
+        posters=posters,
+        teachers=teachers
+    )
 
 @app.route('/admin/upload', methods=['POST'])
 @admin_required
@@ -236,6 +270,70 @@ def remove_poster():
             deleted += 1
 
     flash(f"🗑️ {deleted} of {len(selected_posters)} poster(s) deleted.", 'poster')
+    return redirect(url_for('admin'))
+
+@app.route('/admin/faculty/upload', methods=['POST'])
+@admin_required
+def upload_teacher():
+    teacher_name = request.form.get('teacher_name', '').strip()
+    if not teacher_name:
+        flash('⚠️ Please enter a teacher name.', 'faculty')
+        return redirect(url_for('admin'))
+
+    if 'teacher_photo' not in request.files:
+        flash('❌ Missing teacher photo in request.', 'faculty')
+        return redirect(url_for('admin'))
+
+    file = request.files['teacher_photo']
+
+    if file.filename == '':
+        flash('⚠️ No photo selected.', 'faculty')
+        return redirect(url_for('admin'))
+
+    ext = file.filename.rsplit('.', 1)[-1].lower()
+    if ext not in ALLOWED_IMAGE_EXTS:
+        flash(f'🚫 Invalid file type: {file.filename}', 'faculty')
+        return redirect(url_for('admin'))
+
+    # Generate a unique filename to avoid collisions between teachers
+    filename = secure_filename(f"{uuid.uuid4().hex}.{ext}")
+    save_path = os.path.join(app.config['FACULTY_FOLDER'], filename)
+    file.save(save_path)
+
+    teachers = get_teachers()
+    teachers.append({'name': teacher_name, 'photo': filename})
+    save_teachers(teachers)
+
+    flash(f'✅ Teacher "{teacher_name}" added.', 'faculty')
+    return redirect(url_for('admin'))
+
+@app.route('/admin/faculty/remove', methods=['POST'])
+@admin_required
+def remove_teacher():
+    selected_teachers = request.form.getlist('selected_teachers')
+
+    if not selected_teachers:
+        flash("⚠️ No teachers selected for deletion!", 'faculty')
+        return redirect(url_for('admin'))
+
+    teachers = get_teachers()
+    base = os.path.abspath(app.config['FACULTY_FOLDER'])
+    deleted = 0
+    remaining = []
+
+    for teacher in teachers:
+        photo = teacher.get('photo', '')
+        if photo in selected_teachers:
+            filename = secure_filename(photo)
+            path = os.path.abspath(os.path.join(app.config['FACULTY_FOLDER'], filename))
+            if path.startswith(base) and os.path.isfile(path):
+                os.remove(path)
+            deleted += 1
+        else:
+            remaining.append(teacher)
+
+    save_teachers(remaining)
+    flash(f"🗑️ {deleted} of {len(selected_teachers)} teacher(s) deleted.", 'faculty')
     return redirect(url_for('admin'))
 
 if __name__ == '__main__':

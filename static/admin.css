@@ -462,8 +462,7 @@ footer {
 }
 
 #removePanel,
-#removePosterPanel,
-#removeFacultyPanel {
+#removePosterPanel {
     display: none;
     position: fixed;
     top: 50%;
@@ -481,6 +480,12 @@ footer {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
+#removeFacultyPanel {
+    position: relative;
+    background: #fafafa;
+    border-top: 1px solid #ddd;
+}
+
 #removePanel h2 {
     text-align: center;
     margin-bottom: 20px;
@@ -490,9 +495,7 @@ footer {
     justify-content: flex-start;
 }
 
-#removePanel .close-btn,
-#removePanel .close-btn,
-#removeFacultyPanel {
+.close-btn {
     position: absolute;
     top: 10px;
     right: 15px;

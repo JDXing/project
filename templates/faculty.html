@@ -36,14 +36,14 @@
     <section class="teachers-section">
 
         <div class="teacher-grid">
+            {% for teacher in teachers %}
             <div class="teacher-card">
-                {% for teacher in teachers %}
-
-                    <img src="{{ url_for('static',filename='faculty/' + teacher.photo) }}" alt="{{ teacher.name }}">
-                    <h3>{{ teacher.name }}</h3>
-
-                </div>
-                {% endfor %}
+                <img src="{{ url_for('static', filename='faculty/' + teacher.photo) }}" alt="{{ teacher.name }}">
+                <h3>{{ teacher.name }}</h3>
+            </div>
+            {% else %}
+            <p>No faculty members added yet.</p>
+            {% endfor %}
         </div>
     </section>
 
