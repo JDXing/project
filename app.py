@@ -6,6 +6,7 @@ load_dotenv()
 import os
 import json
 import uuid
+from datetime import datetime, timedelta, timezone
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
@@ -14,14 +15,18 @@ UPLOAD_FOLDER = 'static/uploads'
 POSTER_FOLDER = 'static/posters'
 FACULTY_FOLDER = 'static/faculty'
 FACULTY_DATA_FILE = os.path.join(FACULTY_FOLDER, 'faculty.json')
+USER_SLIDE_FOLDER = 'static/user_slides'
+USER_SLIDE_DATA_FILE = os.path.join(USER_SLIDE_FOLDER, 'user_slides.json')
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['POSTER_FOLDER'] = POSTER_FOLDER
 app.config['FACULTY_FOLDER'] = FACULTY_FOLDER
+app.config['USER_SLIDE_FOLDER'] = USER_SLIDE_FOLDER
 
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 os.makedirs(app.config['POSTER_FOLDER'], exist_ok=True)
 os.makedirs(app.config['FACULTY_FOLDER'], exist_ok=True)
+os.makedirs(app.config['USER_SLIDE_FOLDER'], exist_ok=True)
 
 ALLOWED_IMAGE_EXTS = {'png', 'jpg', 'jpeg', 'heic', 'webp'}
 ALLOWED_VIDEO_EXTS = {'mp4', 'mov', 'avi', 'webm'}
@@ -73,10 +78,54 @@ def save_teachers(teachers):
     with open(FACULTY_DATA_FILE, 'w', encoding='utf-8') as f:
         json.dump(teachers, f, ensure_ascii=False, indent=2)
 
+def get_user_slides():
+    """Return active user-submitted slides (not older than 24h). Cleans expired ones."""
+    if not os.path.isfile(USER_SLIDE_DATA_FILE):
+        return []
+    try:
+        with open(USER_SLIDE_DATA_FILE, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        if not isinstance(data, list):
+            return []
+    except (json.JSONDecodeError, OSError):
+        return []
+
+    now = datetime.now(timezone.utc)
+    valid, expired = [], []
+    for item in data:
+        uploaded_at = datetime.fromisoformat(item['uploaded_at'])
+        if uploaded_at.tzinfo is None:
+            uploaded_at = uploaded_at.replace(tzinfo=timezone.utc)
+        if now - uploaded_at < timedelta(hours=24):
+            # Attach seconds_remaining so template can show a countdown hint
+            item['expires_in_h'] = int((timedelta(hours=24) - (now - uploaded_at)).total_seconds() // 3600)
+            valid.append(item)
+        else:
+            expired.append(item)
+
+    # Delete expired files and rewrite JSON
+    for item in expired:
+        path = os.path.join(USER_SLIDE_FOLDER, item['filename'])
+        if os.path.isfile(path):
+            os.remove(path)
+    with open(USER_SLIDE_DATA_FILE, 'w', encoding='utf-8') as f:
+        json.dump([{k: v for k, v in i.items() if k != 'expires_in_h'} for i in valid],
+                  f, ensure_ascii=False, indent=2)
+    return valid
+
+
+def save_user_slides(slides):
+    with open(USER_SLIDE_DATA_FILE, 'w', encoding='utf-8') as f:
+        json.dump(slides, f, ensure_ascii=False, indent=2)
+
+
 @app.route('/')
 def home():
     posters = get_posters()
-    return render_template('index.html', posters=posters)
+    user_slides = get_user_slides()
+    return render_template('index.html', posters=posters, user_slides=user_slides)
+
+
 
 @app.route('/aboutus')
 def aboutus():
@@ -115,6 +164,65 @@ def faculty():
     teachers = get_teachers()
     return render_template('faculty.html', teachers=teachers)
 
+@app.route('/admin/slides/upload', methods=['POST'])
+@admin_required
+def upload_slide():
+    if 'slide_image' not in request.files:
+        flash('❌ No file provided.', 'slides')
+        return redirect(url_for('admin'))
+
+    file = request.files['slide_image']
+    if file.filename == '':
+        flash('⚠️ No file selected.', 'slides')
+        return redirect(url_for('admin'))
+
+    ext = file.filename.rsplit('.', 1)[-1].lower()
+    if ext not in ALLOWED_IMAGE_EXTS:
+        flash('🚫 Only image files allowed.', 'slides')
+        return redirect(url_for('admin'))
+
+    filename = secure_filename(f"{uuid.uuid4().hex}.{ext}")
+    save_path = os.path.join(app.config['USER_SLIDE_FOLDER'], filename)
+    file.save(save_path)
+
+    slides = get_user_slides()
+    slides.append({
+        'filename': filename,
+        'uploaded_at': datetime.now(timezone.utc).isoformat()
+    })
+    save_user_slides(slides)
+
+    flash('✅ Slide added. It will auto-remove after 24 hours.', 'slides')
+    return redirect(url_for('admin'))
+
+
+@app.route('/admin/slides/remove', methods=['POST'])
+@admin_required
+def remove_slide():
+    selected = request.form.getlist('selected_slides')
+    if not selected:
+        flash('⚠️ No slides selected.', 'slides')
+        return redirect(url_for('admin'))
+
+    slides = get_user_slides()
+    base = os.path.abspath(app.config['USER_SLIDE_FOLDER'])
+    deleted = 0
+    remaining = []
+
+    for slide in slides:
+        if slide['filename'] in selected:
+            path = os.path.abspath(os.path.join(app.config['USER_SLIDE_FOLDER'], slide['filename']))
+            if path.startswith(base) and os.path.isfile(path):
+                os.remove(path)
+            deleted += 1
+        else:
+            remaining.append(slide)
+
+    save_user_slides(remaining)
+    flash(f'🗑️ {deleted} slide(s) removed.', 'slides')
+    return redirect(url_for('admin'))
+
+
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
     if request.method == 'POST':
@@ -148,12 +256,14 @@ def admin():
         ]
     posters = get_posters()
     teachers = get_teachers()
+    user_slides = get_user_slides()
     return render_template(
         'admin.html',
         categories=categories,
         cat_images=cat_images,
         posters=posters,
-        teachers=teachers
+        teachers=teachers,
+        user_slides=user_slides
     )
 
 @app.route('/admin/upload', methods=['POST'])
