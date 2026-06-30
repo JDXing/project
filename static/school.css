@@ -114,26 +114,6 @@ h2 {
     transition: 0.3s ease;
 }
 
-.poster-slider{
-    width:90%;
-    max-width:900px;
-    margin:auto;
-    overflow:hidden;
-    border-radius:15px;
-}
-
-.slides{
-    display:flex;
-    transition:transform 0.5s ease;
-}
-
-.slides img{
-    width:100%;
-    flex-shrink:0;
-    height:450px;
-    object-fit:contain;
-}
-
 /* Heading */
 .h1 {
     padding: 20px;
@@ -166,13 +146,30 @@ h2 {
 }
 
 .face {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 64px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 3rem;
     font-weight: 700;
     background-size: 800% 800%;
     animation: gradientShift 8s ease infinite, floatText 4s ease-in-out infinite;
     text-align: center;
     text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* Banner slideshow */
+.banner {
+    overflow: hidden;
+    position: relative;
+}
+
+.banner-slides {
+    display: flex;
+    transition: transform 0.6s ease;
+    height: 100%;
+}
+
+.banner-slides>img {
+    min-width: 100%;
+    object-fit: cover;
 }
 
 /* Floating / subtle vertical motion */

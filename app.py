@@ -192,7 +192,7 @@ def upload_slide():
     })
     save_user_slides(slides)
 
-    flash('✅ Slide added. It will auto-remove after 24 hours.', 'slides')
+    flash('✅ Slide added', 'slides')
     return redirect(url_for('admin'))
 
 

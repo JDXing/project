@@ -251,13 +251,14 @@ button {
     gap: 15px;
 }
 
-#uploadForm {
+#uploadForm,
+#facultyForm {
     display: flex;
     align-items: center;
     gap: 15px;
 }
 
-.intxt {
+.intxt,.intxt.teacherNameInput {
     height: 45px;
     padding: 0 12px;
     font-size: 16px;
@@ -462,7 +463,9 @@ footer {
 }
 
 #removePanel,
-#removePosterPanel {
+#removePosterPanel,
+#removeFacultyPanel,
+#removeSlidePanel {
     display: none;
     position: fixed;
     top: 50%;

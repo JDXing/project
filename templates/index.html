@@ -8,36 +8,6 @@
     <title>Cherupushpam</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='school.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='images/logo.jpg') }}">
-    <style>
-        /* Slide wrapper — makes user slides and poster slides behave identically */
-        .slide-wrap { position: relative; min-width: 100%; }
-        .slide-wrap img { width: 100%; display: block; }
-
-        /* Badge on timed slides in the banner */
-        .slide-badge {
-            position: absolute;
-            bottom: 10px; right: 12px;
-            background: rgba(0,0,0,0.55);
-            color: #fff;
-            font-size: 12px;
-            padding: 4px 10px;
-            border-radius: 20px;
-            backdrop-filter: blur(4px);
-        }
-
-        /* Banner slideshow */
-        .banner { overflow: hidden; position: relative; }
-        .banner-slides {
-            display: flex;
-            transition: transform 0.6s ease;
-            height: 100%;
-        }
-        .banner-slides > img {
-            min-width: 100%;
-            object-fit: cover;
-        }
-    </style>
-
 
 </head>
 
@@ -64,17 +34,19 @@
         <section class="section1">
             <div class="banner">
                 <div class="banner-slides" id="bannerSlides">
-                    <img src="static/images/WhatsApp Image 2025-10-01 at 10.35.03_6c7f2bfc.jpg">
-                    <img src="static/images/WhatsApp Image 2025-10-01 at 10.35.05_05943215.jpg">
+                    {% if not user_slides %}
+                    <img
+                        src="{{ url_for('static', filename='images/WhatsApp Image 2025-10-01 at 10.35.03_6c7f2bfc.jpg') }}">
+                    <img
+                        src="{{ url_for('static', filename='images/WhatsApp Image 2025-10-01 at 10.35.05_05943215.jpg') }}">
+                    {% endif %}
                     {% for slide in user_slides %}
-                    <div style="position:relative; min-width:100%; height:100%;">
-                        <img src="{{ url_for('static', filename='user_slides/' + slide.filename) }}" style="width:100%; height:100%; object-fit:cover;">
-                        <span class="slide-badge">⏳ {{ slide.expires_in_h }}h left</span>
-                    </div>
+                    <img src="{{ url_for('static', filename='user_slides/' + slide.filename) }}">
                     {% endfor %}
                 </div>
                 <div class="banner-overlay">
-                    <h1 class="face">Welcome to Cherupushpam U.P. School</h1>
+                    
+                    <h1 class="face">CHERUPUSHPAM U.P. SCHOOL</h1>
                 </div>
             </div>
         </section>
@@ -87,17 +59,18 @@
             </div>
         </section>
 
+
+        {% if posters %}
         <div class="poster-slider">
-            <div class="slides" id="slides">
-                
+            <div class="posterslides" id="posterslides">
                 {% for poster in posters %}
                 <div class="slide-wrap">
                     <img src="{{ url_for('static', filename='posters/' + poster) }}">
                 </div>
                 {% endfor %}
-
             </div>
         </div>
+        {% endif %}
 
         <!-- MISSION & VISION -->
         <section class="mission-vision">
@@ -117,7 +90,8 @@
 
         <!-- HIGHLIGHT CARDS -->
         <section class="highlights">
-            <a class="highlight-card show-on-scroll" href="{{ url_for('academics') }}#Programs">📚 Programs & Activities</a>
+            <a class="highlight-card show-on-scroll" href="{{ url_for('academics') }}#Programs">📚 Programs &
+                Activities</a>
             <a class="highlight-card show-on-scroll" href="{{ url_for('academics') }}#Clubs">🏫 Clubs</a>
             <a class="highlight-card show-on-scroll" href="{{ url_for('galary') }}">🖼 Gallery</a>
             <a class="highlight-card show-on-scroll" href="{{ url_for('aboutus') }}#History">📜 History</a>
@@ -126,7 +100,9 @@
     </div>
 
     <script>
-        // Banner slideshow (hardcoded images + timed slides)
+        // Banner slideshow: shows the 2 default images when no slides
+        // have been uploaded, or only the uploaded slides otherwise.
+        // Slides are stacked and crossfade via the .is-active class.
         let bannerCurrent = 0;
         const bannerSlides = document.getElementById("bannerSlides");
         const bannerTotal = bannerSlides ? bannerSlides.children.length : 0;
@@ -134,41 +110,43 @@
         function showBannerSlide(index) {
             if (bannerTotal === 0) return;
             bannerCurrent = (index + bannerTotal) % bannerTotal;
-            bannerSlides.style.transform = `translateX(-${bannerCurrent * 100}%)`;
+            bannerSlides.querySelectorAll("img").forEach((img, i) => {
+                img.classList.toggle("is-active", i === bannerCurrent);
+            });
         }
 
+        showBannerSlide(0);
+
         if (bannerTotal > 1) {
-            setInterval(() => showBannerSlide(bannerCurrent + 1), 3000);
+            setInterval(() => showBannerSlide(bannerCurrent + 1), 4500);
         }
 
         // Poster slider
         let currentSlide = 0;
+        const slides = document.getElementById("posterslides");
+        const slideEls = Array.from(slides.children);
+        const totalSlides = slideEls.length;
 
-        const slides = document.getElementById("slides");
-        const totalSlides = slides.children.length;
         function showSlide(index) {
             if (totalSlides === 0) return;
             currentSlide = (index + totalSlides) % totalSlides;
-            slides.style.transform = `translateX(-${currentSlide * 100}%)`;
+
+            slideEls.forEach((el, i) => {
+                const offset = (i - currentSlide + totalSlides) % totalSlides;
+                el.classList.remove("pos-0", "pos-1", "pos-2", "pos-hidden");
+                if (offset === 0) el.classList.add("pos-0");
+                else if (offset === 1) el.classList.add("pos-1");
+                else if (offset === 2) el.classList.add("pos-2");
+                else el.classList.add("pos-hidden");
+            });
         }
+
+        showSlide(0);
 
         if (totalSlides > 1) {
             setInterval(() => {
                 showSlide(currentSlide + 1);
             }, 3000);
-        }
-
-        let items = JSON.parse(localStorage.getItem("announcements")) || [];
-        let list = document.getElementById("announcementList");
-
-        if (items.length === 0) {
-            list.innerHTML = "<li>No announcements available.</li>";
-        } else {
-            items.forEach((item) => {
-                let li = document.createElement("li");
-                li.innerHTML = `<span style="display:block; text-align:right; color:gray; font-size:12px;">${item.date}</span>${item.text}`;
-                list.appendChild(li);
-            });
         }
 
         // PAGE TRANSITION ON NAVIGATION
@@ -211,7 +189,7 @@
     </script>
 
     <footer>
-        <p>&copy; 2025 [School Name]. All rights reserved.</p>
+        <p>&copy; 2025 Cherupushpam U.P. School. All rights reserved.</p>
     </footer>
 </body>
 

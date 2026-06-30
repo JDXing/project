@@ -240,7 +240,7 @@
     <!-- Timed Slides -->
     <div class="admin-box">
         <div class="gallery-bar">
-            <div class="title">Timed Slides</div>
+            <div class="title">Main Slides</div>
             <div class="btn-container">
 
                 <form id="slideForm" action="{{ url_for('upload_slide') }}" method="POST"
@@ -308,7 +308,6 @@
         function triggerTeacherUpload() {
             const name = document.getElementById('teacherNameInput').value.trim();
             if (!name) {
-                alert('Please enter a teacher name before uploading.');
                 document.getElementById('teacherNameInput').focus();
                 return;
             }
@@ -341,7 +340,6 @@
         function triggerFileUpload() {
             const cat = document.getElementById('categoryInput').value.trim();
             if (!cat) {
-                alert('Please enter a category name before uploading.');
                 document.getElementById('categoryInput').focus();
                 return;
             }
