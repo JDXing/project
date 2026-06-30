@@ -45,7 +45,7 @@
                     {% endfor %}
                 </div>
                 <div class="banner-overlay">
-                    
+
                     <h1 class="face">CHERUPUSHPAM U.P. SCHOOL</h1>
                 </div>
             </div>
@@ -122,9 +122,10 @@
         }
 
         // Poster slider
+        // Poster slider
         let currentSlide = 0;
         const slides = document.getElementById("posterslides");
-        const slideEls = Array.from(slides.children);
+        const slideEls = slides ? Array.from(slides.children) : [];   // ← guard added
         const totalSlides = slideEls.length;
 
         function showSlide(index) {
@@ -141,7 +142,7 @@
             });
         }
 
-        showSlide(0);
+        if (slides) showSlide(0);   // ← guard added
 
         if (totalSlides > 1) {
             setInterval(() => {
